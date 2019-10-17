@@ -7,7 +7,7 @@
     "simple_slack": "dist/bin/slack.js"
   },
   "engines": {
-    "node": "9"
+    "node": "10.x"
   },
   "keywords": [
     "example",
