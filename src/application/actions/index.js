@@ -8,7 +8,7 @@ export const addMessageSuccess = createAction('MESSAGE_ADD_SUCCESS');
 export const addMessageRequest = createAction('MESSAGE_ADD_REQUEST');
 export const addMessageFailure = createAction('MESSAGE_ADD_FAILURE');
 
-export const addMessage = ({ text, activeChannel }) => async (dispatch) => {
+export const addMessage = ({ activeChannel, text }) => async (dispatch) => {
   dispatch(addMessageRequest);
   try {
     const url = routes.channelMessagesPath(activeChannel);

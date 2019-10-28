@@ -18,7 +18,7 @@ class MessageForm extends React.PureComponent {
   handleSubmit = async (values) => {
     const { addMessage, reset, activeChannel } = this.props;
     try {
-      await addMessage({ ...values, activeChannel });
+      await addMessage({ activeChannel, ...values });
     } catch (e) {
       throw new SubmissionError({ _error: e.message });
     }
