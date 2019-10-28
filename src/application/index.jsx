@@ -23,9 +23,12 @@ const store = createStore(
 );
 
 export default (gon) => {
-  console.log(gon);
   gon.channels.forEach(channel => (
     store.dispatch(actions.addChannelSuccess({ channel }))
+  ));
+
+  gon.messages.forEach(message => (
+    store.dispatch(actions.addMessageSuccess({ message }))
   ));
 
   ReactDOM.render(
