@@ -8,11 +8,12 @@ export const addMessageSuccess = createAction('MESSAGE_ADD_SUCCESS');
 export const addMessageRequest = createAction('MESSAGE_ADD_REQUEST');
 export const addMessageFailure = createAction('MESSAGE_ADD_FAILURE');
 
-export const addMessage = ({ activeChannel, text }) => async (dispatch) => {
+export const addMessage = ({ author, activeChannel, text }) => async (dispatch) => {
   dispatch(addMessageRequest);
   try {
     const url = routes.channelMessagesPath(activeChannel);
-    const { data: { data } } = await axios.post(url, { data: { attributes: { text } } });
+    const { data: { data } } = await axios.post(url, { data: { attributes: { author, text } } });
+    console.log(data);
     dispatch(addMessageSuccess({ message: data.attributes }));
   } catch (e) {
     dispatch(addMessageFailure());

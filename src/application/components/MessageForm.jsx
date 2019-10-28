@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import * as actions from '../actions';
+import UsernameContext from './UsernameContext';
 
 const mapStateToProps = (state) => {
   const props = {
@@ -17,13 +18,16 @@ const actionCreators = {
 class MessageForm extends React.PureComponent {
   handleSubmit = async (values) => {
     const { addMessage, reset, activeChannel } = this.props;
+    const author = this.context;
     try {
-      await addMessage({ activeChannel, ...values });
+      await addMessage({ author, activeChannel, ...values });
     } catch (e) {
       throw new SubmissionError({ _error: e.message });
     }
     reset();
   }
+
+  static contextType = UsernameContext;
 
   render() {
     const {
