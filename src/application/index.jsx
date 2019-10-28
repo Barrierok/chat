@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import cookies from 'js-cookie';
+import io from 'socket.io-client';
 import App from './components/App.jsx';
 import reducers from './reducers';
 import UsernameContext from './components/UsernameContext';
@@ -16,10 +17,9 @@ const devtoolMiddleware = ext && ext();
 
 const store = createStore(
   reducers,
-  compose(
-    applyMiddleware(thunk),
-    devtoolMiddleware,
-  ),
+  (ext
+    ? compose(applyMiddleware(thunk), devtoolMiddleware)
+    : applyMiddleware(thunk)),
 );
 
 export default (gon) => {
@@ -30,6 +30,11 @@ export default (gon) => {
   gon.messages.forEach(message => (
     store.dispatch(actions.addMessageSuccess({ message }))
   ));
+
+  const socket = io();
+  socket.on('newMessage', (data) => {
+    store.dispatch(actions.addMessageSuccess({ message: data.data.attributes }));
+  });
 
   ReactDOM.render(
     <Provider store={store}>
