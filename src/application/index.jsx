@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import cookies from 'js-cookie';
 import App from './components/App.jsx';
 import reducers from './reducers';
-import { setStartChannels } from './actions';
+import UsernameContext from './components/UsernameContext';
+import * as actions from './actions';
 
 /* eslint-disable no-underscore-dangle */
 const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
@@ -21,11 +23,16 @@ const store = createStore(
 );
 
 export default (gon) => {
-  store.dispatch(setStartChannels({ startChannels: gon.channels }));
+  console.log(gon);
+  gon.channels.forEach(channel => (
+    store.dispatch(actions.addChannelSuccess({ channel }))
+  ));
 
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <UsernameContext.Provider value={cookies.get('username')}>
+        <App />
+      </UsernameContext.Provider>
     </Provider>,
     document.getElementById('chat'),
   );

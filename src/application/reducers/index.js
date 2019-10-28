@@ -4,23 +4,37 @@ import { handleActions } from 'redux-actions';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
+const messageAddingState = handleActions({
+  [actions.addMessageRequest]() {
+    return 'requested';
+  },
+  [actions.addMessageSuccess]() {
+    return 'finished';
+  },
+  [actions.addMessageFailure]() {
+    return 'failed';
+  },
+}, 'none');
+
+const channelAddingState = handleActions({
+  [actions.addChannelRequest]() {
+    return 'requested';
+  },
+  [actions.addChannelSuccess]() {
+    return 'finished';
+  },
+  [actions.addChannelFailure]() {
+    return 'failed';
+  },
+}, 'none');
+
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { channel } }) {
     const { byId, allIds } = state;
     return {
+      ...state,
       byId: { ...byId, [channel.id]: channel },
       allIds: [...allIds, channel.id],
-      activeChannel: channel.id,
-    };
-  },
-  [actions.setStartChannels](state, { payload: { startChannels } }) {
-    const { byId, allIds } = state;
-    const channelsById = startChannels.reduce((acc, c) => ({ ...acc, [c.id]: c }), {});
-    const channelsId = startChannels.map(c => c.id);
-    return {
-      ...state,
-      byId: { ...byId, ...channelsById },
-      allIds: [...allIds, ...channelsId],
     };
   },
 }, { byId: {}, allIds: [], activeChannel: 0 });
@@ -36,6 +50,8 @@ const messages = handleActions({
 }, { byId: {}, allIds: [] });
 
 export default combineReducers({
+  channelAddingState,
+  messageAddingState,
   channels,
   messages,
   form: formReducer,

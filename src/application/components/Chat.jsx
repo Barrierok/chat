@@ -12,9 +12,17 @@ const actionCreators = {};
 
 class Chat extends React.PureComponent {
   render() {
-    // const { messages } = this.props;
+    const { messages } = this.props;
     return (
-      <p>Messages</p>
+      <ul>
+        {messages.map(ms => (
+          <li key={ms.id}>
+            {ms.author}
+            <br />
+            {ms.text}
+          </li>
+        ))}
+      </ul>
     );
   }
 }

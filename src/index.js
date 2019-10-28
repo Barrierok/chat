@@ -11,7 +11,9 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-const randomName = faker.name.findName();
-cookies.set('username', randomName);
+if (!cookies.get('username')) {
+  const randomName = faker.name.findName();
+  cookies.set('username', randomName);
+}
 
 application(gon);
