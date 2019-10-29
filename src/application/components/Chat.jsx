@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
+import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { messages: { byId, allIds } } = state;
@@ -8,8 +7,7 @@ const mapStateToProps = (state) => {
   return { messages };
 };
 
-const actionCreators = {};
-
+@connect(mapStateToProps)
 class Chat extends React.PureComponent {
   render() {
     const { messages } = this.props;
@@ -27,4 +25,4 @@ class Chat extends React.PureComponent {
   }
 }
 
-export default connect(mapStateToProps, actionCreators)(Chat);
+export default Chat;

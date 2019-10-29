@@ -7,7 +7,7 @@ import cookies from 'js-cookie';
 import io from 'socket.io-client';
 import App from './components/App.jsx';
 import reducers from './reducers';
-import UsernameContext from './components/UsernameContext';
+import UsernameContext from './UsernameContext';
 import * as actions from './actions';
 
 /* eslint-disable no-underscore-dangle */

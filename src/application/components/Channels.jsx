@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-// import * as actions from '../actions';
+import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { channels: { byId, allIds, activeChannel } } = state;
@@ -8,8 +7,7 @@ const mapStateToProps = (state) => {
   return { channels, activeChannel };
 };
 
-const actionCreators = {};
-
+@connect(mapStateToProps)
 class Channels extends React.PureComponent {
   render() {
     const { channels } = this.props;
@@ -21,4 +19,4 @@ class Channels extends React.PureComponent {
   }
 }
 
-export default connect(mapStateToProps, actionCreators)(Channels);
+export default Channels;

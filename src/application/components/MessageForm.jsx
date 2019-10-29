@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
-import * as actions from '../actions';
-import UsernameContext from './UsernameContext';
+import { Field, SubmissionError } from 'redux-form';
+import UsernameContext from '../UsernameContext';
+import connect from '../connect';
+import reduxForm from '../reduxForm';
 
 const mapStateToProps = (state) => {
   const props = {
@@ -11,10 +11,8 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const actionCreators = {
-  addMessage: actions.addMessage,
-};
-
+@connect(mapStateToProps)
+@reduxForm('newMessage')
 class MessageForm extends React.PureComponent {
   handleSubmit = async (values) => {
     const { addMessage, reset, activeChannel } = this.props;
@@ -48,7 +46,4 @@ class MessageForm extends React.PureComponent {
   }
 }
 
-const ConnectedForm = connect(mapStateToProps, actionCreators)(MessageForm);
-export default reduxForm({
-  form: 'newMessage',
-})(ConnectedForm);
+export default MessageForm;
