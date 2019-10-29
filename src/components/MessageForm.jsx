@@ -1,8 +1,9 @@
 import React from 'react';
 import { Field, SubmissionError } from 'redux-form';
-import UsernameContext from '../UsernameContext';
-import connect from '../connect';
-import reduxForm from '../reduxForm';
+import { Button } from 'react-bootstrap';
+import UsernameContext from '../utils/UsernameContext';
+import connect from '../utils/connect';
+import reduxForm from '../utils/reduxForm';
 
 const mapStateToProps = (state) => {
   const props = {
@@ -39,7 +40,9 @@ class MessageForm extends React.PureComponent {
         <div className="form-group mx-3">
           <Field name="text" required disabled={submitting} component="input" type="text" />
         </div>
-        <input type="submit" disabled={pristine || submitting} className="btn btn-primary btn-sm" value="Input message" />
+        <Button type="submit" variant="primary" className="btn-sm" disabled={pristine || submitting}>
+          Send
+        </Button>
         {error && <div className="ml-3">{error}</div>}
       </form>
     );
