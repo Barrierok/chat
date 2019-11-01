@@ -1,4 +1,5 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
 import connect from '../utils/connect';
 
 const mapStateToProps = (state) => {
@@ -10,11 +11,15 @@ const mapStateToProps = (state) => {
 @connect(mapStateToProps)
 class Channels extends React.PureComponent {
   render() {
-    const { channels } = this.props;
+    const { channels, activeChannel } = this.props;
     return (
-      <ul className="list-group">
-        {channels.map(channel => <li key={channel.id} className="list-group-item">{channel.name}</li>)}
-      </ul>
+      <Nav defaultActiveKey="/general" className="flex-column" navbar>
+        {channels.map(({ id, name }) => (
+          <Nav.Item key={id}>
+            <Nav.Link disabled={activeChannel === id}>{name}</Nav.Link>
+          </Nav.Item>
+        ))}
+      </Nav>
     );
   }
 }

@@ -1,3 +1,78 @@
-.fade.in {
-  opacity: 1;
+html {
+  font-size: 14px;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+.navbar {
+  border-bottom: 1px solid lightgray;
+}
+
+#chat {
+  margin: 0;
+  padding: 0;
+  height: calc(100% - 58px);
+}
+
+.row {
+  height: 100%;
+}
+
+.channels {
+  margin: 0;
+  padding: 0;
+  border-right: 1px solid lightgray;
+  height: 100%;
+}
+
+.communication {
+  margin: 0;
+  height: 100%;
+  padding: 0;
+}
+
+.fields {
+  overflow-y: scroll;
+  max-height: 94%;
+}
+
+.form {
+  width: 100%;
+}
+
+.form input {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin: 1vh;
+  height: 4vh;
+  width: 85%;
+}
+
+.form .btn {
+  width: 10%;
+  height: 4vh;
+}
+
+.message {
+  margin: 5px;
+  padding: 5px;
+  min-width: 20rem;
+  width: fit-content;
+}
+
+.message h6 {
+  font-size: 0.8rem;
+}
+
+.message p {
+  margin: 0;
+  padding: 0;
 }

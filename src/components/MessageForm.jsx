@@ -36,10 +36,8 @@ class MessageForm extends React.PureComponent {
       error,
     } = this.props;
     return (
-      <form className="form-inline" onSubmit={handleSubmit(this.handleSubmit)}>
-        <div className="form-group mx-3">
-          <Field name="text" required disabled={submitting} component="input" type="text" />
-        </div>
+      <form className="form-inline form" onSubmit={handleSubmit(this.handleSubmit)}>
+        <Field name="text" required disabled={submitting} component="input" type="text" />
         <Button type="submit" variant="primary" className="btn-sm" disabled={pristine || submitting}>
           Send
         </Button>

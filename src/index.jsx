@@ -45,8 +45,8 @@ gon.messages.forEach(message => (
 ));
 
 const socket = io();
-socket.on('newMessage', (data) => {
-  store.dispatch(actions.addMessageSuccess({ message: data.data.attributes }));
+socket.on('newMessage', ({ data: { attributes } }) => {
+  store.dispatch(actions.addMessageSuccess({ message: attributes }));
 });
 
 ReactDOM.render(

@@ -12,15 +12,14 @@ class Chat extends React.PureComponent {
   render() {
     const { messages } = this.props;
     return (
-      <ul>
+      <section className="fields">
         {messages.map(ms => (
-          <li key={ms.id}>
-            {ms.author}
-            <br />
-            {ms.text}
-          </li>
+          <div className="message" key={ms.id}>
+            <h6>{ms.author}</h6>
+            <p>{ms.text}</p>
+          </div>
         ))}
-      </ul>
+      </section>
     );
   }
 }
