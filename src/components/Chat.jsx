@@ -9,6 +9,23 @@ const mapStateToProps = (state) => {
 
 @connect(mapStateToProps)
 class Chat extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.messagesEndRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+
   render() {
     const { messages } = this.props;
     return (
@@ -19,6 +36,7 @@ class Chat extends React.PureComponent {
             <p>{ms.text}</p>
           </div>
         ))}
+        <div ref={this.messagesEndRef} />
       </section>
     );
   }

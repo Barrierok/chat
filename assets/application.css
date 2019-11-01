@@ -12,14 +12,10 @@ body {
   height: 100%;
 }
 
-.navbar {
-  border-bottom: 1px solid lightgray;
-}
-
 #chat {
   margin: 0;
   padding: 0;
-  height: calc(100% - 58px);
+  height: calc(100% - 54px);
 }
 
 .row {
@@ -29,19 +25,21 @@ body {
 .channels {
   margin: 0;
   padding: 0;
-  border-right: 1px solid lightgray;
-  height: 100%;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
 }
 
 .communication {
   margin: 0;
-  height: 100%;
   padding: 0;
+  height: 100%;
+  border: 1px solid lightgray;
 }
 
 .fields {
   overflow-y: scroll;
-  max-height: 94%;
+  overflow-x: auto;
+  height: 94%;
 }
 
 .form {
@@ -62,10 +60,10 @@ body {
 }
 
 .message {
+  display: block;
   margin: 5px;
   padding: 5px;
   min-width: 20rem;
-  width: fit-content;
 }
 
 .message h6 {
@@ -75,4 +73,5 @@ body {
 .message p {
   margin: 0;
   padding: 0;
+  word-wrap: break-word;
 }
