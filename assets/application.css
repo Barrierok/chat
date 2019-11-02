@@ -29,11 +29,23 @@ body {
   border-top: 1px solid lightgray;
 }
 
+.channel {
+  display: flex;
+}
+
 .communication {
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
   border: 1px solid lightgray;
+}
+
+.title {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid lightgray;
+  align-items: center;
 }
 
 .fields {

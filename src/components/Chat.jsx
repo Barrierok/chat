@@ -2,8 +2,9 @@ import React from 'react';
 import connect from '../utils/connect';
 
 const mapStateToProps = (state) => {
-  const { messages: { byId, allIds } } = state;
-  const messages = allIds.map(id => byId[id]);
+  const { messages: { byId, allIds }, channels: { activeChannel } } = state;
+  const allMessages = allIds.map(id => byId[id]);
+  const messages = allMessages.filter(m => m.channelId === activeChannel);
   return { messages };
 };
 

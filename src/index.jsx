@@ -1,6 +1,7 @@
 import '@babel/polyfill';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/application.css';
+import 'material-design-icons';
 import gon from 'gon';
 import faker from 'faker';
 import cookies from 'js-cookie';
@@ -35,6 +36,7 @@ const store = createStore(
     ? compose(applyMiddleware(thunk), devtoolMiddleware)
     : applyMiddleware(thunk)),
 );
+console.log(gon);
 
 gon.channels.forEach(channel => (
   store.dispatch(actions.addChannelSuccess({ channel }))
@@ -43,6 +45,8 @@ gon.channels.forEach(channel => (
 gon.messages.forEach(message => (
   store.dispatch(actions.addMessageSuccess({ message }))
 ));
+
+store.dispatch(actions.setActiveChannel({ activeChannel: gon.currentChannelId }));
 
 const socket = io();
 socket.on('newMessage', ({ data: { attributes } }) => {

@@ -37,7 +37,13 @@ const channels = handleActions({
       allIds: [...allIds, channel.id],
     };
   },
-}, { byId: {}, allIds: [], activeChannel: 1 });
+  [actions.setActiveChannel](state, { payload: { activeChannel } }) {
+    return {
+      ...state,
+      activeChannel,
+    };
+  },
+}, { byId: {}, allIds: [], activeChannel: 0 });
 
 const messages = handleActions({
   [actions.addMessageSuccess](state, { payload: { message } }) {
