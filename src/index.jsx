@@ -45,16 +45,21 @@ const initValues = ({ channels, messages, currentChannelId }) => {
 
 initValues(gon);
 
-const socket = io();
-socket.on('newMessage', ({ data: { attributes } }) => {
-  store.dispatch(actions.addMessageSuccess({ message: attributes }));
-}).on('newChannel', ({ data: { attributes } }) => {
-  store.dispatch(actions.addChannelSuccess({ channel: attributes }));
-}).on('removeChannel', ({ data: { id } }) => {
-  store.dispatch(actions.removeChannelSuccess({ id }));
-}).on('renameChannel', ({ data: { attributes } }) => {
-  store.dispatch(actions.renameChannelSuccess({ channel: attributes }));
-});
+const mappingListener = (event, serverData) => {
+  const mapping = {
+    newMessage: data => actions.addMessageSuccess({ message: data }),
+    newChannel: data => actions.addChannelSuccess({ channel: data }),
+    removeChannel: data => actions.removeChannelSuccess({ id: data }),
+    renameChanel: data => actions.renameChannelSuccess({ channel: data }),
+  };
+  return store.dispatch(mapping[event](serverData));
+};
+
+io()
+  .on('newMessage', ({ data: { attributes } }) => mappingListener('newMessage', attributes))
+  .on('newChannel', ({ data: { attributes } }) => mappingListener('newChannel', attributes))
+  .on('removeChannel', ({ data: { id } }) => mappingListener('removeChannel', id))
+  .on('renameChannel', ({ data: { attributes } }) => mappingListener('removeChannel', attributes));
 
 ReactDOM.render(
   <Provider store={store}>
