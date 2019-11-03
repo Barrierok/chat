@@ -21,10 +21,6 @@ const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
 const devtoolMiddleware = ext && ext();
 /* eslint-enable */
 
-if (process.env.NODE_ENV !== 'production') {
-  localStorage.debug = 'chat:*';
-}
-
 if (!cookies.get('username')) {
   const randomName = faker.name.findName();
   cookies.set('username', randomName);
@@ -37,18 +33,19 @@ const store = createStore(
     : applyMiddleware(thunk)),
 );
 
-gon.channels.forEach(channel => (
-  store.dispatch(actions.addChannelSuccess({ channel }))
-));
+const initValues = ({ channels, messages, currentChannelId }) => {
+  channels.forEach(channel => (
+    store.dispatch(actions.addChannelSuccess({ channel }))
+  ));
+  messages.forEach(message => (
+    store.dispatch(actions.addMessageSuccess({ message }))
+  ));
+  store.dispatch(actions.setActiveChannel({ activeChannel: currentChannelId }));
+};
 
-gon.messages.forEach(message => (
-  store.dispatch(actions.addMessageSuccess({ message }))
-));
+initValues(gon);
 
-store.dispatch(actions.setActiveChannel({ activeChannel: gon.currentChannelId }));
-
-const socket = io();
-socket.on('newMessage', ({ data: { attributes } }) => {
+io().on('newMessage', ({ data: { attributes } }) => {
   store.dispatch(actions.addMessageSuccess({ message: attributes }));
 }).on('newChannel', ({ data: { attributes } }) => {
   store.dispatch(actions.addChannelSuccess({ channel: attributes }));
