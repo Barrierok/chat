@@ -24,35 +24,29 @@ class deleteChannel extends React.PureComponent {
     }
   }
 
-  render() {
+  renderForm = () => {
     const {
-      toggleRename,
-      show,
       handleSubmit,
       submitting,
       error,
       pristine,
     } = this.props;
     return (
-      <Modal
-        show={show}
-        onHide={toggleRename}
-      >
-        <Modal.Header closeButton>
-          Rename Channel
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={handleSubmit(this.handleSubmit)}>
-            <Field name="text" required disabled={submitting} component="input" type="text" />
-            {error && <div className="ml-3">{error}</div>}
-            <Button type="submit" variant="success" className="btn-sm" disabled={pristine || submitting}>
-              Rename
-            </Button>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={toggleRename}>Close</Button>
-        </Modal.Footer>
+      <form onSubmit={handleSubmit(this.handleSubmit)}>
+        <Field name="text" required disabled={submitting} component="input" type="text" />
+        {error && <div className="ml-3">{error}</div>}
+        <Button type="submit" variant="success" className="btn-sm" disabled={pristine || submitting}>Rename</Button>
+      </form>
+    );
+  }
+
+  render() {
+    const { toggleRename, show } = this.props;
+    return (
+      <Modal show={show} onHide={toggleRename}>
+        <Modal.Header closeButton>Rename Channel</Modal.Header>
+        <Modal.Body>{this.renderForm()}</Modal.Body>
+        <Modal.Footer><Button onClick={toggleRename}>Close</Button></Modal.Footer>
       </Modal>
     );
   }

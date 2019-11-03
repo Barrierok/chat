@@ -50,17 +50,11 @@ store.dispatch(actions.setActiveChannel({ activeChannel: gon.currentChannelId })
 const socket = io();
 socket.on('newMessage', ({ data: { attributes } }) => {
   store.dispatch(actions.addMessageSuccess({ message: attributes }));
-});
-
-socket.on('newChannel', ({ data: { attributes } }) => {
+}).on('newChannel', ({ data: { attributes } }) => {
   store.dispatch(actions.addChannelSuccess({ channel: attributes }));
-});
-
-socket.on('removeChannel', ({ data: { id } }) => {
+}).on('removeChannel', ({ data: { id } }) => {
   store.dispatch(actions.removeChannelSuccess({ id }));
-});
-
-socket.on('renameChannel', ({ data: { attributes } }) => {
+}).on('renameChannel', ({ data: { attributes } }) => {
   store.dispatch(actions.renameChannelSuccess({ channel: attributes }));
 });
 

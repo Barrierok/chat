@@ -4,41 +4,24 @@ import { handleActions } from 'redux-actions';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
-const messageAddingState = handleActions({
-  [actions.addMessageRequest]() {
-    return 'requested';
-  },
-  [actions.addMessageSuccess]() {
-    return 'finished';
-  },
-  [actions.addMessageFailure]() {
-    return 'failed';
-  },
-}, 'none');
+const mappingActions = action => (
+  handleActions({
+    [actions[`${action}Request`]]() {
+      return 'requested';
+    },
+    [actions[`${action}Success`]]() {
+      return 'finished';
+    },
+    [actions[`${action}Failure`]]() {
+      return 'failed';
+    },
+  }, 'none')
+);
 
-const channelAddingState = handleActions({
-  [actions.addChannelRequest]() {
-    return 'requested';
-  },
-  [actions.addChannelSuccess]() {
-    return 'finished';
-  },
-  [actions.addChannelFailure]() {
-    return 'failed';
-  },
-}, 'none');
-
-const channelRemovingState = handleActions({
-  [actions.removeChannelRequest]() {
-    return 'requested';
-  },
-  [actions.removeChannelSuccess]() {
-    return 'finished';
-  },
-  [actions.removeChannelFailure]() {
-    return 'failed';
-  },
-}, 'none');
+const messageAddingState = mappingActions('addMessage');
+const channelAddingState = mappingActions('addChannel');
+const channelRemovingState = mappingActions('removeChannel');
+const channelRenamingState = mappingActions('renameChannel');
 
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { channel } }) {
@@ -56,9 +39,9 @@ const channels = handleActions({
     };
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
-    const { byId, allIds } = state;
+    const { byId, allIds, activeChannel } = state;
     return {
-      activeChannel: 1,
+      activeChannel: activeChannel === id ? 1 : activeChannel,
       byId: _.omitBy(byId, id),
       allIds: _.without(allIds, id),
     };
@@ -86,6 +69,7 @@ export default combineReducers({
   channelRemovingState,
   messageAddingState,
   channelAddingState,
+  channelRenamingState,
   channels,
   messages,
   form: formReducer,
