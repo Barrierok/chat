@@ -45,7 +45,8 @@ const initValues = ({ channels, messages, currentChannelId }) => {
 
 initValues(gon);
 
-io().on('newMessage', ({ data: { attributes } }) => {
+const socket = io();
+socket.on('newMessage', ({ data: { attributes } }) => {
   store.dispatch(actions.addMessageSuccess({ message: attributes }));
 }).on('newChannel', ({ data: { attributes } }) => {
   store.dispatch(actions.addChannelSuccess({ channel: attributes }));
