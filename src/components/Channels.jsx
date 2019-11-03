@@ -2,8 +2,9 @@ import React from 'react';
 import { Nav, Button } from 'react-bootstrap';
 import connect from '../utils/connect';
 import * as actions from '../actions';
-import NewChannelModal from './NewChannelModal';
+import ChannelForm from './ChannelForm';
 import ConfirmDelete from './ConfirmDelete';
+import RenameChannel from './RenameChannel';
 
 const mapStateToProps = (state) => {
   const { channels: { byId, allIds, activeChannel } } = state;
@@ -23,7 +24,10 @@ class Channels extends React.PureComponent {
     this.state = {
       isOpen: false,
       isOpenConfirm: false,
+      isOpenRename: false,
       removingId: null,
+      renamingId: null,
+      valueChannel: '',
     };
   }
 
@@ -43,6 +47,16 @@ class Channels extends React.PureComponent {
     this.setState({ isOpenConfirm: !isOpenConfirm });
   }
 
+  toggleRename = () => {
+    const { isOpenRename } = this.state;
+    this.setState({ isOpenRename: !isOpenRename });
+  }
+
+  handleClickRename = (valueChannel, renamingId) => () => {
+    this.setState({ valueChannel, renamingId });
+    this.toggleRename();
+  }
+
   handleClickRemove = removingId => () => {
     this.setState({ removingId });
     this.toggleConfirm();
@@ -50,7 +64,14 @@ class Channels extends React.PureComponent {
 
   render() {
     const { channels, activeChannel, removeChannel } = this.props;
-    const { isOpen, isOpenConfirm, removingId } = this.state;
+    const {
+      isOpen,
+      isOpenConfirm,
+      removingId,
+      valueChannel,
+      isOpenRename,
+      renamingId,
+    } = this.state;
     return (
       <>
         <div className="title">
@@ -67,15 +88,22 @@ class Channels extends React.PureComponent {
               >
                 {name}
               </Nav.Link>
+              <Button variant="wigth" onClick={this.handleClickRename(name, id)}><span>&#9998;</span></Button>
               {removable && <Button variant="wigth" onClick={this.handleClickRemove(id)}><span>&times;</span></Button>}
             </Nav.Item>
           ))}
-          {isOpen && <NewChannelModal closeForm={this.toggleForm} />}
+          {isOpen && <ChannelForm closeForm={this.toggleForm} />}
           <ConfirmDelete
             show={isOpenConfirm}
             toggleConfirm={this.toggleConfirm}
             removeChannel={removeChannel}
             removingId={removingId}
+          />
+          <RenameChannel
+            show={isOpenRename}
+            toggleRename={this.toggleRename}
+            id={renamingId}
+            initialValues={{ text: valueChannel }}
           />
         </Nav>
       </>

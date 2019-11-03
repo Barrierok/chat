@@ -13,7 +13,7 @@ const actionCreators = {
 
 @connect(mapStateToProps, actionCreators)
 @reduxForm('newChannel')
-class NewChannelModal extends React.PureComponent {
+class ChannelForm extends React.PureComponent {
   handleSubmit = async (values) => {
     const { addChannel, reset, closeForm } = this.props;
     try {
@@ -40,4 +40,4 @@ class NewChannelModal extends React.PureComponent {
   }
 }
 
-export default NewChannelModal;
+export default ChannelForm;

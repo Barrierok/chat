@@ -63,6 +63,13 @@ const channels = handleActions({
       allIds: _.without(allIds, id),
     };
   },
+  [actions.renameChannelSuccess](state, { payload: { channel } }) {
+    const { byId } = state;
+    return {
+      ...state,
+      byId: { ...byId, [channel.id]: channel },
+    };
+  },
 }, { byId: {}, allIds: [], activeChannel: 0 });
 
 const messages = handleActions({

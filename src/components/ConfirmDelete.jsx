@@ -21,7 +21,7 @@ const ConfirmDelete = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Button onClick={toggleConfirm}>Close</Button>
-        <Button onClick={handleRemove}>Delete</Button>
+        <Button variant="danger" onClick={handleRemove}>Delete</Button>
       </Modal.Body>
     </Modal>
   );

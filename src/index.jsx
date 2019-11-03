@@ -60,6 +60,10 @@ socket.on('removeChannel', ({ data: { id } }) => {
   store.dispatch(actions.removeChannelSuccess({ id }));
 });
 
+socket.on('renameChannel', ({ data: { attributes } }) => {
+  store.dispatch(actions.renameChannelSuccess({ channel: attributes }));
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <UsernameContext.Provider value={cookies.get('username')}>

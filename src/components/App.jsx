@@ -7,10 +7,10 @@ import MessageForm from './MessageForm.jsx';
 const App = () => (
   <Container fluid as="main">
     <Row as="article">
-      <Col sl={12} md={3} lg={2} className="channels">
+      <Col sl={12} md={2} lg={2} className="channels">
         <Channels />
       </Col>
-      <Col sl={12} md={9} lg={10} className="communication">
+      <Col sl={12} md={10} lg={10} className="communication">
         <Chat />
         <MessageForm />
       </Col>
