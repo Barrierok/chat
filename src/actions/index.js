@@ -10,7 +10,22 @@ export const addChannelSuccess = createAction('CHANNEL_ADD_SUCCESS');
 export const addChannelRequest = createAction('CHANNEL_ADD_REQUEST');
 export const addChannelFailure = createAction('CHANNEL_ADD_FAILURE');
 
+export const removeChannelSuccess = createAction('CHANNEL_REMOVE_SUCCESS');
+export const removeChannelRequest = createAction('CHANNEL_REMOVE_REQUEST');
+export const removeChannelFailure = createAction('CHANNEL_REMOVE_FAILURE');
+
 export const setActiveChannel = createAction('ACTIVE_CHANNEL_SET');
+
+export const removeChannel = ({ id }) => async (dispatch) => {
+  dispatch(removeChannelRequest());
+  try {
+    const url = routes.channelPath(id);
+    await axios.delete(url);
+  } catch (e) {
+    dispatch(removeChannelFailure());
+    throw e;
+  }
+};
 
 export const addMessage = ({ author, activeChannel, text }) => async (dispatch) => {
   dispatch(addMessageRequest);
@@ -27,8 +42,7 @@ export const addChannel = ({ name }) => async (dispatch) => {
   dispatch(addChannelRequest());
   try {
     const url = routes.channelsPath();
-    const { data: { data } } = await axios.post(url, { data: { attributes: { name } } });
-    dispatch(addChannelSuccess({ channel: data.attributes }));
+    await axios.post(url, { data: { attributes: { name } } });
   } catch (e) {
     dispatch(addChannelFailure());
     throw e;

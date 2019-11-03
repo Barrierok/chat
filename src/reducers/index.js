@@ -1,4 +1,4 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import { reducer as formReducer } from 'redux-form';
@@ -28,6 +28,18 @@ const channelAddingState = handleActions({
   },
 }, 'none');
 
+const channelRemovingState = handleActions({
+  [actions.removeChannelRequest]() {
+    return 'requested';
+  },
+  [actions.removeChannelSuccess]() {
+    return 'finished';
+  },
+  [actions.removeChannelFailure]() {
+    return 'failed';
+  },
+}, 'none');
+
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { channel } }) {
     const { byId, allIds } = state;
@@ -43,6 +55,14 @@ const channels = handleActions({
       activeChannel,
     };
   },
+  [actions.removeChannelSuccess](state, { payload: { id } }) {
+    const { byId, allIds } = state;
+    return {
+      activeChannel: 1,
+      byId: _.omitBy(byId, id),
+      allIds: _.without(allIds, id),
+    };
+  },
 }, { byId: {}, allIds: [], activeChannel: 0 });
 
 const messages = handleActions({
@@ -56,8 +76,9 @@ const messages = handleActions({
 }, { byId: {}, allIds: [] });
 
 export default combineReducers({
-  channelAddingState,
+  channelRemovingState,
   messageAddingState,
+  channelAddingState,
   channels,
   messages,
   form: formReducer,

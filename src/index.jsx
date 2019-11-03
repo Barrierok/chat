@@ -36,7 +36,6 @@ const store = createStore(
     ? compose(applyMiddleware(thunk), devtoolMiddleware)
     : applyMiddleware(thunk)),
 );
-console.log(gon);
 
 gon.channels.forEach(channel => (
   store.dispatch(actions.addChannelSuccess({ channel }))
@@ -51,6 +50,14 @@ store.dispatch(actions.setActiveChannel({ activeChannel: gon.currentChannelId })
 const socket = io();
 socket.on('newMessage', ({ data: { attributes } }) => {
   store.dispatch(actions.addMessageSuccess({ message: attributes }));
+});
+
+socket.on('newChannel', ({ data: { attributes } }) => {
+  store.dispatch(actions.addChannelSuccess({ channel: attributes }));
+});
+
+socket.on('removeChannel', ({ data: { id } }) => {
+  store.dispatch(actions.removeChannelSuccess({ id }));
 });
 
 ReactDOM.render(

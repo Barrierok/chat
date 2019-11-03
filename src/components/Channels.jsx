@@ -1,10 +1,9 @@
 import React from 'react';
 import { Nav, Button } from 'react-bootstrap';
-import { Field, SubmissionError } from 'redux-form';
-import reduxForm from '../utils/reduxForm';
 import connect from '../utils/connect';
 import * as actions from '../actions';
-
+import NewChannelModal from './NewChannelModal';
+import ConfirmDelete from './ConfirmDelete';
 
 const mapStateToProps = (state) => {
   const { channels: { byId, allIds, activeChannel } } = state;
@@ -14,15 +13,18 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   setActiveChannel: actions.setActiveChannel,
-  addChannel: actions.addChannel,
+  removeChannel: actions.removeChannel,
 };
 
 @connect(mapStateToProps, actionCreators)
-@reduxForm('newChannel')
 class Channels extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = { isOpen: false };
+    this.state = {
+      isOpen: false,
+      isOpenConfirm: false,
+      removingId: null,
+    };
   }
 
   setActiveChannel = activeChannel => (e) => {
@@ -31,48 +33,30 @@ class Channels extends React.PureComponent {
     setActiveChannel({ activeChannel });
   }
 
-  openForm = () => {
-    this.setState({ isOpen: true });
+  toggleForm = () => {
+    const { isOpen } = this.state;
+    this.setState({ isOpen: !isOpen });
   }
 
-  closeForm = () => {
-    this.setState({ isOpen: false });
+  toggleConfirm = () => {
+    const { isOpenConfirm } = this.state;
+    this.setState({ isOpenConfirm: !isOpenConfirm });
   }
 
-  handleSubmit = async (values) => {
-    const { addChannel, reset } = this.props;
-    try {
-      await addChannel({ name: values.text });
-      this.setState({ isOpen: false });
-    } catch (e) {
-      throw new SubmissionError({ _error: e.message });
-    }
-    reset();
-  }
-
-  renderForm = () => {
-    const {
-      handleSubmit,
-      submitting,
-      error,
-    } = this.props;
-    return (
-      <form onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} component="input" type="text" />
-        {error && <div className="ml-3">{error}</div>}
-      </form>
-    );
+  handleClickRemove = removingId => () => {
+    this.setState({ removingId });
+    this.toggleConfirm();
   }
 
   render() {
-    const { channels, activeChannel } = this.props;
-    const { isOpen } = this.state;
+    const { channels, activeChannel, removeChannel } = this.props;
+    const { isOpen, isOpenConfirm, removingId } = this.state;
     return (
       <>
         <div className="title">
           <span>Channels</span>
-          {!isOpen && <Button onClick={this.openForm} variant="wigth"><span>+</span></Button>}
-          {isOpen && <Button onClick={this.closeForm} variant="wigth"><span>&times;</span></Button>}
+          {!isOpen && <Button onClick={this.toggleForm} variant="wigth"><span>+</span></Button>}
+          {isOpen && <Button onClick={this.toggleForm} variant="wigth"><span>&times;</span></Button>}
         </div>
         <Nav defaultActiveKey="/general" className="flex-column" navbar>
           {channels.map(({ id, name, removable }) => (
@@ -83,10 +67,16 @@ class Channels extends React.PureComponent {
               >
                 {name}
               </Nav.Link>
-              {removable && <Button variant="wigth"><span>&times;</span></Button>}
+              {removable && <Button variant="wigth" onClick={this.handleClickRemove(id)}><span>&times;</span></Button>}
             </Nav.Item>
           ))}
-          {isOpen && this.renderForm()}
+          {isOpen && <NewChannelModal closeForm={this.toggleForm} />}
+          <ConfirmDelete
+            show={isOpenConfirm}
+            toggleConfirm={this.toggleConfirm}
+            removeChannel={removeChannel}
+            removingId={removingId}
+          />
         </Nav>
       </>
     );
