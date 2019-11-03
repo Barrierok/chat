@@ -22,11 +22,10 @@ class Channels extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
+      isOpenForm: false,
       isOpenConfirm: false,
       isOpenRename: false,
-      removingId: null,
-      renamingId: null,
+      activeId: null,
       valueChannel: '',
     };
   }
@@ -37,74 +36,65 @@ class Channels extends React.PureComponent {
     setActiveChannel({ activeChannel });
   }
 
-  toggleForm = () => {
-    const { isOpen } = this.state;
-    this.setState({ isOpen: !isOpen });
+  toggleShow = target => () => {
+    const { state } = this;
+    const currentState = state[target];
+    this.setState({ [target]: !currentState });
   }
 
-  toggleConfirm = () => {
-    const { isOpenConfirm } = this.state;
-    this.setState({ isOpenConfirm: !isOpenConfirm });
+  handleModal = (target, activeId, valueChannel = '') => () => {
+    this.setState({ activeId, valueChannel });
+    this.toggleShow(target)();
   }
 
-  toggleRename = () => {
-    const { isOpenRename } = this.state;
-    this.setState({ isOpenRename: !isOpenRename });
+  renderConfirm = () => {
+    const { removeChannel } = this.props;
+    const { isOpenConfirm, activeId } = this.state;
+    return (
+      <ConfirmDelete
+        show={isOpenConfirm}
+        toggleConfirm={this.toggleShow('isOpenConfirm')}
+        removeChannel={removeChannel}
+        removingId={activeId}
+      />
+    );
   }
 
-  handleClickRename = (valueChannel, renamingId) => () => {
-    this.setState({ valueChannel, renamingId });
-    this.toggleRename();
-  }
-
-  handleClickRemove = removingId => () => {
-    this.setState({ removingId });
-    this.toggleConfirm();
+  renderRename = () => {
+    const { activeId, valueChannel, isOpenRename } = this.state;
+    return (
+      <RenameChannel
+        show={isOpenRename}
+        toggleRename={this.toggleShow('isOpenRename')}
+        id={activeId}
+        initialValues={{ text: valueChannel }}
+      />
+    );
   }
 
   render() {
-    const { channels, activeChannel, removeChannel } = this.props;
-    const {
-      isOpen,
-      isOpenConfirm,
-      removingId,
-      valueChannel,
-      isOpenRename,
-      renamingId,
-    } = this.state;
+    const { channels, activeChannel } = this.props;
+    const { isOpenForm } = this.state;
     return (
       <>
         <div className="title">
           <span>Channels</span>
-          {!isOpen && <Button onClick={this.toggleForm} variant="wigth"><span>+</span></Button>}
-          {isOpen && <Button onClick={this.toggleForm} variant="wigth"><span>&times;</span></Button>}
+          {!isOpenForm && <Button onClick={this.toggleShow('isOpenForm')} variant="wigth"><span>+</span></Button>}
+          {isOpenForm && <Button onClick={this.toggleShow('isOpenForm')} variant="wigth"><span>&times;</span></Button>}
         </div>
         <Nav defaultActiveKey="/general" className="flex-column" navbar>
           {channels.map(({ id, name, removable }) => (
             <Nav.Item key={id} className="channel">
-              <Nav.Link
-                onClick={this.setActiveChannel(id)}
-                disabled={activeChannel === id}
-              >
+              <Nav.Link onClick={this.setActiveChannel(id)} disabled={activeChannel === id}>
                 {name}
               </Nav.Link>
-              <Button variant="wigth" onClick={this.handleClickRename(name, id)}><span>&#9998;</span></Button>
-              {removable && <Button variant="wigth" onClick={this.handleClickRemove(id)}><span>&times;</span></Button>}
+              <Button variant="wigth" onClick={this.handleModal('isOpenRename', id, name)}><span>&#9998;</span></Button>
+              {removable && <Button variant="wigth" onClick={this.handleModal('isOpenConfirm', id)}><span>&times;</span></Button>}
             </Nav.Item>
           ))}
-          {isOpen && <ChannelForm closeForm={this.toggleForm} />}
-          <ConfirmDelete
-            show={isOpenConfirm}
-            toggleConfirm={this.toggleConfirm}
-            removeChannel={removeChannel}
-            removingId={removingId}
-          />
-          <RenameChannel
-            show={isOpenRename}
-            toggleRename={this.toggleRename}
-            id={renamingId}
-            initialValues={{ text: valueChannel }}
-          />
+          {isOpenForm && <ChannelForm closeForm={this.toggleShow('isOpenForm')} />}
+          {this.renderConfirm()}
+          {this.renderRename()}
         </Nav>
       </>
     );
