@@ -32,10 +32,10 @@ class deleteChannel extends React.PureComponent {
       pristine,
     } = this.props;
     return (
-      <form onSubmit={handleSubmit(this.handleSubmit)}>
+      <form className="renameChannel" onSubmit={handleSubmit(this.handleSubmit)}>
         <Field name="text" required disabled={submitting} component="input" type="text" />
         {error && <div className="ml-3">{error}</div>}
-        <Button type="submit" variant="success" className="btn-sm" disabled={pristine || submitting}>Rename</Button>
+        <Button type="submit" variant="success" disabled={pristine || submitting}>Rename</Button>
       </form>
     );
   }
@@ -45,8 +45,9 @@ class deleteChannel extends React.PureComponent {
     return (
       <Modal show={show} onHide={toggleRename}>
         <Modal.Header closeButton>Rename Channel</Modal.Header>
-        <Modal.Body>{this.renderForm()}</Modal.Body>
-        <Modal.Footer><Button onClick={toggleRename}>Close</Button></Modal.Footer>
+        <Modal.Body>
+          {this.renderForm()}
+        </Modal.Body>
       </Modal>
     );
   }

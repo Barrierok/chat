@@ -1,7 +1,6 @@
 import '@babel/polyfill';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/application.css';
-import 'material-design-icons';
 import gon from 'gon';
 import faker from 'faker';
 import cookies from 'js-cookie';
@@ -50,7 +49,7 @@ const mappingListener = (event, serverData) => {
     newMessage: data => actions.addMessageSuccess({ message: data }),
     newChannel: data => actions.addChannelSuccess({ channel: data }),
     removeChannel: data => actions.removeChannelSuccess({ id: data }),
-    renameChanel: data => actions.renameChannelSuccess({ channel: data }),
+    renameChannel: data => actions.renameChannelSuccess({ channel: data }),
   };
   return store.dispatch(mapping[event](serverData));
 };
@@ -59,7 +58,7 @@ io()
   .on('newMessage', ({ data: { attributes } }) => mappingListener('newMessage', attributes))
   .on('newChannel', ({ data: { attributes } }) => mappingListener('newChannel', attributes))
   .on('removeChannel', ({ data: { id } }) => mappingListener('removeChannel', id))
-  .on('renameChannel', ({ data: { attributes } }) => mappingListener('removeChannel', attributes));
+  .on('renameChannel', ({ data: { attributes } }) => mappingListener('renameChannel', attributes));
 
 ReactDOM.render(
   <Provider store={store}>

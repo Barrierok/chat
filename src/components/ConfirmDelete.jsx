@@ -15,6 +15,7 @@ const ConfirmDelete = (props) => {
       size="sm"
       show={show}
       onHide={toggleConfirm}
+      className="confirm"
     >
       <Modal.Header closeButton>
         <Modal.Title>Are you sure?</Modal.Title>

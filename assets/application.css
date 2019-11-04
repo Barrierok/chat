@@ -32,6 +32,18 @@ main {
   display: flex;
 }
 
+.channelForm  input {
+  width: 100%;
+}
+
+.renameChannel {
+  display: flex;
+}
+
+.renameChannel input {
+  width: 100%;
+}
+
 .communication {
   margin: 0;
   padding: 0;
@@ -71,6 +83,7 @@ main {
 
 .form .btn {
   width: 15%;
+  margin: 1rem;
   height: 3rem;
 }
 
@@ -89,4 +102,9 @@ main {
   margin: 0;
   padding: 0;
   word-wrap: break-word;
+}
+
+.confirm .modal-body {
+  display: flex;
+  justify-content: space-around;
 }
