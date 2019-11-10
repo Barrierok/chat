@@ -24,6 +24,17 @@ const channelRemovingState = mappingActions('removeChannel');
 const channelRenamingState = mappingActions('renameChannel');
 
 const channels = handleActions({
+  [actions.initialize](state, { payload: { channels: initChannels, currentChannelId } }) {
+    const byId = initChannels.reduce((acc, c) => ({ ...acc, [c.id]: c }), {});
+    const allIds = initChannels.map(c => c.id);
+    return {
+      ...state,
+      byId,
+      allIds,
+      activeChannel: currentChannelId,
+      generalId: currentChannelId,
+    };
+  },
   [actions.addChannelSuccess](state, { payload: { channel } }) {
     const { byId, allIds } = state;
     return {
@@ -39,9 +50,15 @@ const channels = handleActions({
     };
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
-    const { byId, allIds, activeChannel } = state;
+    const {
+      byId,
+      allIds,
+      activeChannel,
+      generalId,
+    } = state;
     return {
-      activeChannel: activeChannel === id ? 1 : activeChannel,
+      ...state,
+      activeChannel: activeChannel === id ? generalId : activeChannel,
       byId: _.omitBy(byId, id),
       allIds: _.without(allIds, id),
     };
@@ -53,9 +70,32 @@ const channels = handleActions({
       byId: { ...byId, [channel.id]: channel },
     };
   },
-}, { byId: {}, allIds: [], activeChannel: 0 });
+}, {
+  byId: {},
+  allIds: [],
+  activeChannel: null,
+  generalId: null,
+});
 
 const messages = handleActions({
+  [actions.initialize](state, { payload: { messages: initMessages } }) {
+    const byId = initMessages.reduce((acc, m) => ({ ...acc, [m.id]: m }), {});
+    const allIds = initMessages.map(m => m.id);
+    return {
+      ...state,
+      byId,
+      allIds,
+    };
+  },
+  [actions.removeChannelSuccess](state, { payload: { id } }) {
+    const { byId } = state;
+    const newById = _.omitBy(byId, message => message.channelId === id);
+    return {
+      ...state,
+      byId: newById,
+      allIds: Object.keys(newById),
+    };
+  },
   [actions.addMessageSuccess](state, { payload: { message } }) {
     const { byId, allIds } = state;
     return {

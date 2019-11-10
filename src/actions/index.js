@@ -20,6 +20,8 @@ export const renameChannelFailure = createAction('CHANNEL_RENAME_FAILURE');
 
 export const setActiveChannel = createAction('ACTIVE_CHANNEL_SET');
 
+export const initialize = createAction('INITIALIZE');
+
 export const renameChannel = ({ id, name }) => async (dispath) => {
   dispath(renameChannelRequest());
   try {

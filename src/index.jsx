@@ -20,7 +20,8 @@ const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
 const devtoolMiddleware = ext && ext();
 /* eslint-enable */
 
-if (!cookies.get('username')) {
+const username = cookies.get('username');
+if (!username) {
   const randomName = faker.name.findName();
   cookies.set('username', randomName);
 }
@@ -32,16 +33,9 @@ const store = createStore(
     : applyMiddleware(thunk)),
 );
 
-const initValues = ({ channels, messages, currentChannelId }) => {
-  channels.forEach(channel => (
-    store.dispatch(actions.addChannelSuccess({ channel }))
-  ));
-  messages.forEach(message => (
-    store.dispatch(actions.addMessageSuccess({ message }))
-  ));
-  store.dispatch(actions.setActiveChannel({ activeChannel: currentChannelId }));
-};
-
+const initValues = values => (
+  store.dispatch(actions.initialize(values))
+);
 initValues(gon);
 
 const mappingListener = (event, serverData) => {
@@ -62,7 +56,7 @@ io()
 
 ReactDOM.render(
   <Provider store={store}>
-    <UsernameContext.Provider value={cookies.get('username')}>
+    <UsernameContext.Provider value={username}>
       <App />
     </UsernameContext.Provider>
   </Provider>,
