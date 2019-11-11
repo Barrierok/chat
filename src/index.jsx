@@ -7,18 +7,13 @@ import cookies from 'js-cookie';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { configureStore } from 'redux-starter-kit';
 import thunk from 'redux-thunk';
 import io from 'socket.io-client';
 import App from './components/App.jsx';
 import reducers from './reducers';
 import UsernameContext from './utils/UsernameContext';
-import * as actions from './actions';
-
-/* eslint-disable no-underscore-dangle */
-const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-const devtoolMiddleware = ext && ext();
-/* eslint-enable */
+import actions from './actions';
 
 const username = cookies.get('username');
 if (!username) {
@@ -26,12 +21,10 @@ if (!username) {
   cookies.set('username', randomName);
 }
 
-const store = createStore(
-  reducers,
-  (ext
-    ? compose(applyMiddleware(thunk), devtoolMiddleware)
-    : applyMiddleware(thunk)),
-);
+const store = configureStore({
+  reducer: reducers,
+  middleware: [thunk],
+});
 
 const initValues = values => (
   store.dispatch(actions.initialize(values))

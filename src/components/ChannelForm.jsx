@@ -2,16 +2,10 @@ import React from 'react';
 import { Field, SubmissionError } from 'redux-form';
 import reduxForm from '../utils/reduxForm';
 import connect from '../utils/connect';
-import * as actions from '../actions';
 
 const mapStateToProps = () => ({});
 
-const actionCreators = {
-  addChannel: actions.addChannel,
-};
-
-
-@connect(mapStateToProps, actionCreators)
+@connect(mapStateToProps)
 @reduxForm('newChannel')
 class ChannelForm extends React.PureComponent {
   handleSubmit = async (values) => {
