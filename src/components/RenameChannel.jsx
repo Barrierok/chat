@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import {
+  Modal, Button, Form,
+} from 'react-bootstrap';
 import { Field, SubmissionError } from 'redux-form';
 import reduxForm from '../utils/reduxForm';
 import connect from '../utils/connect';
@@ -32,11 +34,11 @@ class deleteChannel extends React.PureComponent {
       pristine,
     } = this.props;
     return (
-      <form className="renameChannel" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} component="input" type="text" />
+      <Form className="d-flex" onSubmit={handleSubmit(this.handleSubmit)}>
+        <Field name="text" required disabled={submitting} component="input" type="text" className="w-100" />
         {error && <div className="ml-3">{error}</div>}
         <Button type="submit" variant="success" disabled={pristine || submitting}>Rename</Button>
-      </form>
+      </Form>
     );
   }
 

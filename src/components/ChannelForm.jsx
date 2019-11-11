@@ -32,8 +32,8 @@ class ChannelForm extends React.PureComponent {
       error,
     } = this.props;
     return (
-      <form className="channelForm" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} component="input" type="text" />
+      <form className="channelForm w-100" onSubmit={handleSubmit(this.handleSubmit)}>
+        <Field name="text" required disabled={submitting} component="input" type="text" className="w-100" />
         {error && <div className="ml-3">{error}</div>}
       </form>
     );

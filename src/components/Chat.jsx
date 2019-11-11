@@ -32,9 +32,9 @@ class Chat extends React.PureComponent {
     return (
       <section className="fields">
         {messages.map(ms => (
-          <div className="message" key={ms.id}>
+          <div className="message d-block m-1 p-1 mw-30" key={ms.id}>
             <h6>{ms.author}</h6>
-            <p>{ms.text}</p>
+            <p className="m-0 p-0">{ms.text}</p>
           </div>
         ))}
         <div ref={this.messagesEndRef} />

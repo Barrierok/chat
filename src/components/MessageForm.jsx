@@ -1,6 +1,8 @@
 import React from 'react';
 import { Field, SubmissionError } from 'redux-form';
-import { Button } from 'react-bootstrap';
+import {
+  Button, Form, Row, Col,
+} from 'react-bootstrap';
 import UsernameContext from '../utils/UsernameContext';
 import connect from '../utils/connect';
 import reduxForm from '../utils/reduxForm';
@@ -36,13 +38,19 @@ class MessageForm extends React.PureComponent {
       error,
     } = this.props;
     return (
-      <form className="form-inline form" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} component="input" type="text" />
-        <Button type="submit" variant="primary" className="btn-sm" disabled={pristine || submitting}>
-          Send
-        </Button>
-        {error && <div className="ml-3">{error}</div>}
-      </form>
+      <Form className="form d-flex justify-content-around w-100" onSubmit={handleSubmit(this.handleSubmit)}>
+        <Row className="w-100">
+          <Col sm={12} md={8} lg={10}>
+            <Field name="text" required disabled={submitting} component="input" type="text" className="rounded border w-100 mt-3" />
+            {error && <div className="ml-3">{error}</div>}
+          </Col>
+          <Col sm={12} md={4} lg={2}>
+            <Button type="submit" variant="primary" className="w-100 mt-3" disabled={pristine || submitting}>
+              Send
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     );
   }
 }

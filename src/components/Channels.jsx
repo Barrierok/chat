@@ -77,14 +77,14 @@ class Channels extends React.PureComponent {
     const { isOpenForm } = this.state;
     return (
       <>
-        <div className="title">
+        <div className="d-flex justify-content-around border-bottom align-items-center">
           <span>Channels</span>
           {!isOpenForm && <Button onClick={this.toggleShow('isOpenForm')} variant="wigth"><span>+</span></Button>}
           {isOpenForm && <Button onClick={this.toggleShow('isOpenForm')} variant="wigth"><span>&times;</span></Button>}
         </div>
         <Nav defaultActiveKey="/general" className="flex-column" navbar>
           {channels.map(({ id, name, removable }) => (
-            <Nav.Item key={id} className="channel">
+            <Nav.Item key={id} className="channel d-flex">
               <Nav.Link onClick={this.setActiveChannel(id)} disabled={activeChannel === id}>
                 {name}
               </Nav.Link>

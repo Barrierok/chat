@@ -5,12 +5,12 @@ import Chat from './Chat';
 import MessageForm from './MessageForm.jsx';
 
 const App = () => (
-  <Container fluid as="main">
-    <Row as="article">
-      <Col sl={12} md={2} lg={2} className="channels">
+  <Container fluid as="main" className="h-100">
+    <Row as="article" className="h-100">
+      <Col sl={12} md={2} lg={2} className="border-top m-0 p-0">
         <Channels />
       </Col>
-      <Col sl={12} md={10} lg={10} className="communication">
+      <Col sl={12} md={10} lg={10} className="m-0 p-0 h-100 w-100 border-top border-left">
         <Chat />
         <MessageForm />
       </Col>
