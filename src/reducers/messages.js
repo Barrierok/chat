@@ -2,22 +2,6 @@ import _ from 'lodash';
 import { createReducer } from 'redux-starter-kit';
 import actions from '../actions';
 
-const mappingActions = action => (
-  createReducer('none', {
-    [actions[`${action}Request`]]() {
-      return 'requested';
-    },
-    [actions[`${action}Success`]]() {
-      return 'finished';
-    },
-    [actions[`${action}Failure`]]() {
-      return 'failed';
-    },
-  })
-);
-
-const messageAddingState = mappingActions('addMessage');
-
 const messages = createReducer({ byId: {}, allIds: [] }, {
   [actions.initialize](state, { payload: { messages: initMessages } }) {
     const byId = initMessages.reduce((acc, m) => ({ ...acc, [m.id]: m }), {});
@@ -46,7 +30,4 @@ const messages = createReducer({ byId: {}, allIds: [] }, {
   },
 });
 
-export default {
-  messages,
-  messageAddingState,
-};
+export default messages;

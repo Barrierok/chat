@@ -2,24 +2,6 @@ import _ from 'lodash';
 import { createReducer } from 'redux-starter-kit';
 import actions from '../actions';
 
-const mappingActions = action => (
-  createReducer('none', {
-    [actions[`${action}Request`]]() {
-      return 'requested';
-    },
-    [actions[`${action}Success`]]() {
-      return 'finished';
-    },
-    [actions[`${action}Failure`]]() {
-      return 'failed';
-    },
-  })
-);
-
-const channelAddingState = mappingActions('addChannel');
-const channelRemovingState = mappingActions('removeChannel');
-const channelRenamingState = mappingActions('renameChannel');
-
 const channels = createReducer({
   byId: {},
   allIds: [],
@@ -74,9 +56,4 @@ const channels = createReducer({
   },
 });
 
-export default {
-  channels,
-  channelRenamingState,
-  channelRemovingState,
-  channelAddingState,
-};
+export default channels;
