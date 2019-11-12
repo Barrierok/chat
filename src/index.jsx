@@ -15,10 +15,10 @@ import reducers from './reducers';
 import UsernameContext from './utils/UsernameContext';
 import actions from './actions';
 
-const username = cookies.get('username');
+let username = cookies.get('username');
 if (!username) {
-  const randomName = faker.name.findName();
-  cookies.set('username', randomName);
+  username = faker.name.findName();
+  cookies.set('username', username);
 }
 
 const store = configureStore({
