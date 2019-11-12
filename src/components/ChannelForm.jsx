@@ -1,35 +1,35 @@
 import React from 'react';
-import { Field, SubmissionError } from 'redux-form';
-import reduxForm from '../utils/reduxForm';
+import {
+  Formik, Field, Form, ErrorMessage,
+} from 'formik';
 import connect from '../utils/connect';
 
 const mapStateToProps = () => ({});
 
 @connect(mapStateToProps)
-@reduxForm('newChannel')
 class ChannelForm extends React.PureComponent {
-  handleSubmit = async (values) => {
-    const { addChannel, reset, closeForm } = this.props;
+  handleSubmit = async (values, actions) => {
+    const { addChannel, closeForm } = this.props;
+    actions.resetForm();
+    closeForm();
     try {
       await addChannel({ name: values.text });
-      closeForm();
+      actions.setSubmitting(false);
     } catch (e) {
-      throw new SubmissionError({ _error: e.message });
+      actions.setFieldError('text', e.message);
     }
-    reset();
   }
 
   render() {
-    const {
-      handleSubmit,
-      submitting,
-      error,
-    } = this.props;
     return (
-      <form className="channelForm w-100" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} component="input" type="text" className="w-100" />
-        {error && <div className="ml-3">{error}</div>}
-      </form>
+      <Formik initialValues={{ text: '' }} onSubmit={this.handleSubmit}>
+        {({ isSubmitting }) => (
+          <Form className="channelForm w-100">
+            <Field name="text" required disabled={isSubmitting} type="text" className="w-100" />
+            <ErrorMessage name="text" />
+          </Form>
+        )}
+      </Formik>
     );
   }
 }
