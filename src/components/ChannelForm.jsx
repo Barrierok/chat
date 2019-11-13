@@ -11,10 +11,10 @@ class ChannelForm extends React.PureComponent {
   handleSubmit = async (values, actions) => {
     const { addChannel, closeForm } = this.props;
     actions.resetForm();
-    closeForm();
     try {
       await addChannel({ name: values.text });
       actions.setSubmitting(false);
+      closeForm();
     } catch (e) {
       actions.setFieldError('text', e.message);
     }

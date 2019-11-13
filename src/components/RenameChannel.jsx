@@ -2,52 +2,47 @@ import React from 'react';
 import {
   Modal, Button, Form,
 } from 'react-bootstrap';
-import { Field, SubmissionError } from 'redux-form';
-import reduxForm from '../utils/reduxForm';
+import { Formik, Field, ErrorMessage } from 'formik';
 import connect from '../utils/connect';
 
 const mapStateToProps = () => ({});
 
 @connect(mapStateToProps)
-@reduxForm('deleteChannel')
-class deleteChannel extends React.PureComponent {
-  handleSubmit = async (values) => {
+class RenameChannel extends React.PureComponent {
+  handleSubmit = async (values, actions) => {
     const { renameChannel, id, toggleRename } = this.props;
     try {
       await renameChannel({ id, name: values.text });
       toggleRename();
+      actions.setSubmitting(false);
     } catch (e) {
-      throw new SubmissionError({ _error: e.message });
+      actions.setFieldError('text', e.message);
     }
   }
 
-  renderForm = () => {
-    const {
-      handleSubmit,
-      submitting,
-      error,
-      pristine,
-    } = this.props;
-    return (
-      <Form className="d-flex" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} component="input" type="text" className="w-100" />
-        {error && <div className="ml-3">{error}</div>}
-        <Button type="submit" variant="success" disabled={pristine || submitting}>Rename</Button>
-      </Form>
-    );
-  }
+  renderForm = initialValues => (
+    <Formik onSubmit={this.handleSubmit} initialValues={initialValues}>
+      {({ dirty, isSubmitting, handleSubmit }) => (
+        <Form className="d-flex" onSubmit={handleSubmit}>
+          <Field name="text" required disabled={isSubmitting} component="input" type="text" className="w-100" />
+          <ErrorMessage name="text" />
+          <Button type="submit" variant="success" disabled={!dirty || isSubmitting}>Rename</Button>
+        </Form>
+      )}
+    </Formik>
+  );
 
   render() {
-    const { toggleRename, show } = this.props;
+    const { toggleRename, show, initialValues } = this.props;
     return (
       <Modal show={show} onHide={toggleRename}>
         <Modal.Header closeButton>Rename Channel</Modal.Header>
         <Modal.Body>
-          {this.renderForm()}
+          {this.renderForm(initialValues)}
         </Modal.Body>
       </Modal>
     );
   }
 }
 
-export default deleteChannel;
+export default RenameChannel;
