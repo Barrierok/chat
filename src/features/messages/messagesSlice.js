@@ -24,8 +24,8 @@ const messages = createSlice({
     },
   },
   extraReducers: {
-    [removeChannelSuccess]: (state, { payload: { channelId } }) => {
-      state.byId = _.omitBy(state.byId, message => message.channelId === channelId);
+    [removeChannelSuccess]: (state, { payload: { id } }) => {
+      state.byId = _.omitBy(state.byId, message => message.channelId === id);
       state.allIds = Object.keys(state.byId);
     },
   },
