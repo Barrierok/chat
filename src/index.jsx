@@ -22,8 +22,6 @@ import {
   addChannelActionName, removeChannelActionName, renameChannelActionName, addMessageActionName,
 } from './utils/actions';
 
-console.log(addMessageSuccess);
-console.log(initChannels);
 let username = cookies.get('username');
 if (!username) {
   username = faker.name.findName();
@@ -43,7 +41,6 @@ initValues(gon);
 
 
 const mappingListener = (event, serverData) => {
-  console.log(event, serverData);
   const mapping = {
     [addMessageActionName]: data => addMessageSuccess({ message: data }),
     [addChannelActionName]: data => addChannelSuccess({ channel: data }),
