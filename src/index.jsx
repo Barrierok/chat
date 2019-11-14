@@ -39,7 +39,6 @@ const initValues = ({ channels, currentChannelId, messages }) => {
 };
 initValues(gon);
 
-
 const mappingListener = (event, serverData) => {
   const mapping = {
     [addMessageActionName]: data => addMessageSuccess({ message: data }),
