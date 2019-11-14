@@ -1,55 +1,47 @@
 import { createSlice } from 'redux-starter-kit';
+import _ from 'lodash';
 import axios from 'axios';
 
+import { removeChannelSuccess } from '../channels/channelsSlice';
 import routes from '../../routes';
-import createStateSlice from '../../utils/stateSliceCreator';
-import { addMessageActionName } from '../../utils/actions';
 
-const messageAddingState = createStateSlice(addMessageActionName);
-
-export const {
-  actions: { failure: addMessageFailure, success: addMessageSuccess, request: addMessageRequest },
-} = messageAddingState;
+const initialState = {
+  byId: {},
+  allIds: [],
+};
 
 const messages = createSlice({
   name: 'messages',
-  initialState: { byId: {}, allIds: [] },
+  initialState,
   reducers: {
     initMessages: (state, { payload: { messages: initMessages } }) => {
-      const byId = initMessages.reduce((acc, m) => ({ ...acc, [m.id]: m }), {});
-      const allIds = initMessages.map(m => m.id);
-      return {
-        ...state,
-        byId,
-        allIds,
-      };
+      state.byId = _.keyBy(initMessages, 'id');
+      state.allIds = initMessages.map(m => m.id);
+    },
+    addMessageSuccess: (state, { payload: { message } }) => {
+      state.byId[message.id] = message;
+      state.allIds.push(message.id);
     },
   },
   extraReducers: {
-    [addMessageSuccess]: (state, { payload: { message } }) => {
-      const { byId, allIds } = state;
-      return {
-        byId: { ...byId, [message.id]: message },
-        allIds: [...allIds, message.id],
-      };
+    [removeChannelSuccess]: (state, { payload: { channelId } }) => {
+      state.byId = _.omitBy(state.byId, message => message.channelId === channelId);
+      state.allIds = Object.keys(state.byId);
     },
   },
 });
 
-export const { initMessages } = messages.actions;
+const { actions, reducer } = messages;
 
-export const addMessage = ({ author, activeChannel, text }) => async (dispatch) => {
-  dispatch(addMessageRequest());
+export const { initMessages, addMessageSuccess } = actions;
+
+export const addMessage = ({ author, activeChannel, text }) => async () => {
   try {
     const url = routes.channelMessagesPath(activeChannel);
     await axios.post(url, { data: { attributes: { author, text } } });
   } catch (e) {
-    dispatch(addMessageFailure());
     throw e;
   }
 };
 
-export default {
-  messageAddingState: messageAddingState.reducer,
-  messages: messages.reducer,
-};
+export default reducer;

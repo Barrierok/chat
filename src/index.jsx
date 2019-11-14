@@ -11,7 +11,7 @@ import { configureStore } from 'redux-starter-kit';
 import thunk from 'redux-thunk';
 import io from 'socket.io-client';
 
-import App from './components/App.jsx';
+import App from './app/App.jsx';
 import reducers from './reducers';
 import UsernameContext from './utils/UsernameContext';
 import { initMessages, addMessageSuccess } from './features/messages/messagesSlice';
