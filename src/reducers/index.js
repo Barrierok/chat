@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux-starter-kit';
-import channels from './channels';
-import messages from './messages';
-import states from './actionState';
+import channels from '../features/channels/channelsSlice';
+import messages from '../features/messages/messagesSlice';
 
 export default combineReducers({
-  channels,
-  messages,
-  ...states,
+  ...channels,
+  ...messages,
 });

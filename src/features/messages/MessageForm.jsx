@@ -3,8 +3,10 @@ import { Formik, Field } from 'formik';
 import {
   Button, Form, Row, Col,
 } from 'react-bootstrap';
-import UsernameContext from '../utils/UsernameContext';
-import connect from '../utils/connect';
+
+import UsernameContext from '../../utils/UsernameContext';
+import connect from '../../utils/connect';
+import { addMessage as action } from './messagesSlice';
 
 const mapStateToProps = (state) => {
   const props = {
@@ -13,7 +15,7 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-@connect(mapStateToProps)
+@connect(mapStateToProps, { addMessage: action })
 class MessageForm extends React.PureComponent {
   handleSubmit = async (values, actions) => {
     const { addMessage, activeChannel } = this.props;

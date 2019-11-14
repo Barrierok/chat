@@ -10,11 +10,20 @@ import { Provider } from 'react-redux';
 import { configureStore } from 'redux-starter-kit';
 import thunk from 'redux-thunk';
 import io from 'socket.io-client';
+
 import App from './components/App.jsx';
 import reducers from './reducers';
 import UsernameContext from './utils/UsernameContext';
-import actions from './actions';
+import { initMessages, addMessageSuccess } from './features/messages/messagesSlice';
+import {
+  initChannels, addChannelSuccess, removeChannelSuccess, renameChannelSuccess,
+} from './features/channels/channelsSlice';
+import {
+  addChannelActionName, removeChannelActionName, renameChannelActionName, addMessageActionName,
+} from './utils/actions';
 
+console.log(addMessageSuccess);
+console.log(initChannels);
 let username = cookies.get('username');
 if (!username) {
   username = faker.name.findName();
@@ -26,26 +35,29 @@ const store = configureStore({
   middleware: [thunk],
 });
 
-const initValues = values => (
-  store.dispatch(actions.initialize(values))
-);
+const initValues = ({ channels, currentChannelId, messages }) => {
+  store.dispatch(initChannels({ channels, currentChannelId }));
+  store.dispatch(initMessages({ messages }));
+};
 initValues(gon);
 
+
 const mappingListener = (event, serverData) => {
+  console.log(event, serverData);
   const mapping = {
-    newMessage: data => actions.addMessageSuccess({ message: data }),
-    newChannel: data => actions.addChannelSuccess({ channel: data }),
-    removeChannel: data => actions.removeChannelSuccess({ id: data }),
-    renameChannel: data => actions.renameChannelSuccess({ channel: data }),
+    [addMessageActionName]: data => addMessageSuccess({ message: data }),
+    [addChannelActionName]: data => addChannelSuccess({ channel: data }),
+    [removeChannelActionName]: data => removeChannelSuccess({ id: data }),
+    [renameChannelActionName]: data => renameChannelSuccess({ channel: data }),
   };
   return store.dispatch(mapping[event](serverData));
 };
 
 io()
-  .on('newMessage', ({ data: { attributes } }) => mappingListener('newMessage', attributes))
-  .on('newChannel', ({ data: { attributes } }) => mappingListener('newChannel', attributes))
-  .on('removeChannel', ({ data: { id } }) => mappingListener('removeChannel', id))
-  .on('renameChannel', ({ data: { attributes } }) => mappingListener('renameChannel', attributes));
+  .on('newMessage', ({ data: { attributes } }) => mappingListener(addMessageActionName, attributes))
+  .on('newChannel', ({ data: { attributes } }) => mappingListener(addChannelActionName, attributes))
+  .on('removeChannel', ({ data: { id } }) => mappingListener(removeChannelActionName, id))
+  .on('renameChannel', ({ data: { attributes } }) => mappingListener(renameChannelActionName, attributes));
 
 ReactDOM.render(
   <Provider store={store}>

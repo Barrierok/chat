@@ -1,8 +1,9 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Channels from './Channels.jsx';
-import Chat from './Chat';
-import MessageForm from './MessageForm.jsx';
+
+import Channels from '../features/channels/Channels';
+import Chat from '../features/messages/Chat';
+import MessageForm from '../features/messages/MessageForm';
 
 const App = () => (
   <Container fluid as="main" className="h-100">

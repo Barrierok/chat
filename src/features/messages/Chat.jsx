@@ -1,5 +1,6 @@
 import React from 'react';
-import connect from '../utils/connect';
+
+import connect from '../../utils/connect';
 
 const mapStateToProps = (state) => {
   const { messages: { byId, allIds }, channels: { activeChannel } } = state;

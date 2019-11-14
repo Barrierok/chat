@@ -1,9 +1,11 @@
 import React from 'react';
 import { Nav, Button } from 'react-bootstrap';
-import connect from '../utils/connect';
+
+import connect from '../../utils/connect';
 import ChannelForm from './ChannelForm';
 import ConfirmDelete from './ConfirmDelete';
 import RenameChannel from './RenameChannel';
+import * as actions from './channelsSlice';
 
 const mapStateToProps = (state) => {
   const { channels: { byId, allIds, activeChannel } } = state;
@@ -11,7 +13,12 @@ const mapStateToProps = (state) => {
   return { channels, activeChannel };
 };
 
-@connect(mapStateToProps)
+const mapDispatchToProps = {
+  setActiveChannel: actions.setActiveChannel,
+  removeChannel: actions.removeChannel,
+};
+
+@connect(mapStateToProps, mapDispatchToProps)
 class Channels extends React.PureComponent {
   constructor(props) {
     super(props);

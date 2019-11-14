@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Formik, Field, Form, ErrorMessage,
 } from 'formik';
-import connect from '../utils/connect';
 
-const mapStateToProps = () => ({});
+import connect from '../../utils/connect';
+import { addChannel as action } from './channelsSlice';
 
-@connect(mapStateToProps)
+@connect(null, { addChannel: action })
 class ChannelForm extends React.PureComponent {
   handleSubmit = async (values, actions) => {
     const { addChannel, closeForm } = this.props;

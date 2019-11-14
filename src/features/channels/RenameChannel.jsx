@@ -3,11 +3,11 @@ import {
   Modal, Button, Form,
 } from 'react-bootstrap';
 import { Formik, Field, ErrorMessage } from 'formik';
-import connect from '../utils/connect';
 
-const mapStateToProps = () => ({});
+import connect from '../../utils/connect';
+import { renameChannel as action } from './channelsSlice';
 
-@connect(mapStateToProps)
+@connect(null, { renameChannel: action })
 class RenameChannel extends React.PureComponent {
   handleSubmit = async (values, actions) => {
     const { renameChannel, id, toggleRename } = this.props;
