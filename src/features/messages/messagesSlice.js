@@ -7,8 +7,7 @@ import { removeChannelSuccess } from '../channels/channelsSlice';
 import routes from '../../routes';
 
 const initialState = {
-  byId: {},
-  allIds: [],
+  messages: [],
 };
 
 const messages = createSlice({
@@ -16,18 +15,15 @@ const messages = createSlice({
   initialState,
   reducers: {
     initMessages: (state, { payload: { messages: initMessages } }) => {
-      state.byId = _.keyBy(initMessages, 'id');
-      state.allIds = initMessages.map(m => m.id);
+      state.messages = initMessages;
     },
     addMessageSuccess: (state, { payload: { message } }) => {
-      state.byId[message.id] = message;
-      state.allIds.push(message.id);
+      state.messages.push(message);
     },
   },
   extraReducers: {
     [removeChannelSuccess]: (state, { payload: { id } }) => {
-      state.byId = _.omitBy(state.byId, message => message.channelId === id);
-      state.allIds = Object.keys(state.byId);
+      _.remove(state.messages, (m => m.channelId === id));
     },
   },
 });
@@ -37,12 +33,8 @@ const { actions, reducer } = messages;
 export const { initMessages, addMessageSuccess } = actions;
 
 export const addMessage = ({ author, activeChannel, text }) => async () => {
-  try {
-    const url = routes.channelMessagesPath(activeChannel);
-    await axios.post(url, { data: { attributes: { author, text } } });
-  } catch (e) {
-    throw e;
-  }
+  const url = routes.channelMessagesPath(activeChannel);
+  await axios.post(url, { data: { attributes: { author, text } } });
 };
 
 export default reducer;

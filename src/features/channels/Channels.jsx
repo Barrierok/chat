@@ -8,8 +8,7 @@ import RenameChannel from './RenameChannel';
 import * as actions from './channelsSlice';
 
 const mapStateToProps = (state) => {
-  const { channels: { byId, allIds, activeChannel } } = state;
-  const channels = allIds.map(id => byId[id]);
+  const { channels: { channels, activeChannel } } = state;
   return { channels, activeChannel };
 };
 

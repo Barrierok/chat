@@ -6,8 +6,7 @@ import axios from 'axios';
 import routes from '../../routes';
 
 const initialState = {
-  byId: {},
-  allIds: [],
+  channels: [],
   activeChannel: null,
   generalId: null,
 };
@@ -17,8 +16,7 @@ const channels = createSlice({
   initialState,
   reducers: {
     initChannels: (state, { payload: { channels: initChannels, currentChannelId } }) => {
-      state.byId = _.keyBy(initChannels, 'id');
-      state.allIds = initChannels.map(c => c.id);
+      state.channels = initChannels;
       state.activeChannel = currentChannelId;
       state.generalId = currentChannelId;
     },
@@ -26,17 +24,15 @@ const channels = createSlice({
       state.activeChannel = activeChannel;
     },
     addChannelSuccess: (state, { payload: { channel } }) => {
-      state.byId[channel.id] = channel;
-      state.allIds.push(channel.id);
+      state.channels.push(channel);
     },
     removeChannelSuccess: (state, { payload: { id } }) => {
       const { activeChannel, generalId } = state;
       state.activeChannel = (activeChannel === id ? generalId : activeChannel);
-      state.byId = _.omitBy(state.byId, id);
-      state.allIds = _.without(state.allIds, id);
+      _.remove(state.channels, (c => c.id === id));
     },
     renameChannelSuccess: (state, { payload: { channel } }) => {
-      state.byId[channel.id] = channel;
+      state.channels[channel.id] = channel;
     },
   },
 });
@@ -50,28 +46,16 @@ export const {
 export default reducer;
 
 export const renameChannel = ({ id, name }) => async () => {
-  try {
-    const url = routes.channelPath(id);
-    await axios.patch(url, { data: { attributes: { name } } });
-  } catch (e) {
-    throw e;
-  }
+  const url = routes.channelPath(id);
+  await axios.patch(url, { data: { attributes: { name } } });
 };
 
 export const removeChannel = ({ id }) => async () => {
-  try {
-    const url = routes.channelPath(id);
-    await axios.delete(url);
-  } catch (e) {
-    throw e;
-  }
+  const url = routes.channelPath(id);
+  await axios.delete(url);
 };
 
 export const addChannel = ({ name }) => async () => {
-  try {
-    const url = routes.channelsPath();
-    await axios.post(url, { data: { attributes: { name } } });
-  } catch (e) {
-    throw e;
-  }
+  const url = routes.channelsPath();
+  await axios.post(url, { data: { attributes: { name } } });
 };
