@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from 'redux-starter-kit';
 import _ from 'lodash';
 import axios from 'axios';
