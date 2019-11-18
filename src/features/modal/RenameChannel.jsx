@@ -5,16 +5,17 @@ import {
 import { Formik, Field, ErrorMessage } from 'formik';
 
 import connect from '../../utils/connect';
-import { renameChannel as action } from './channelsSlice';
+import { renameChannel as rc } from '../channels/channelsSlice';
+import { hideModal as hm } from './modalSlice';
 
-@connect(null, { renameChannel: action })
+@connect(null, { renameChannel: rc, hideModal: hm })
 class RenameChannel extends React.PureComponent {
   handleSubmit = async (values, actions) => {
-    const { renameChannel, id, toggleRename } = this.props;
+    const { renameChannel, id, hideModal } = this.props;
     try {
       await renameChannel({ id, name: values.text });
-      toggleRename();
       actions.setSubmitting(false);
+      hideModal();
     } catch (e) {
       actions.setFieldError('text', e.message);
     }
@@ -33,9 +34,9 @@ class RenameChannel extends React.PureComponent {
   );
 
   render() {
-    const { toggleRename, show, initialValues } = this.props;
+    const { initialValues, hideModal } = this.props;
     return (
-      <Modal show={show} onHide={toggleRename}>
+      <Modal show onHide={hideModal}>
         <Modal.Header closeButton>Rename Channel</Modal.Header>
         <Modal.Body>
           {this.renderForm(initialValues)}

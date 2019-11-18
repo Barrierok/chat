@@ -3,9 +3,10 @@ import { Nav, Button } from 'react-bootstrap';
 
 import connect from '../../utils/connect';
 import ChannelForm from './ChannelForm';
-import ConfirmDelete from './ConfirmDelete';
-import RenameChannel from './RenameChannel';
 import * as actions from './channelsSlice';
+import { showModal as action } from '../modal/modalSlice';
+import ModalRoot from '../modal/ModalRoot';
+import { removeChannelType, renameChannelType } from '../../utils/constants';
 
 const mapStateToProps = (state) => {
   const { channels: { channels, activeChannel } } = state;
@@ -15,19 +16,19 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   setActiveChannel: actions.setActiveChannel,
   removeChannel: actions.removeChannel,
+  showModal: action,
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 class Channels extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      isOpenForm: false,
-      isOpenConfirm: false,
-      isOpenRename: false,
-      activeId: null,
-      valueChannel: '',
-    };
+    this.state = { isOpenForm: false };
+  }
+
+  toggleForm = () => {
+    const { isOpenForm } = this.state;
+    this.setState({ isOpenForm: !isOpenForm });
   }
 
   setActiveChannel = activeChannel => (e) => {
@@ -36,40 +37,14 @@ class Channels extends React.PureComponent {
     setActiveChannel({ activeChannel });
   }
 
-  toggleShow = target => () => {
-    const { state } = this;
-    const currentState = state[target];
-    this.setState({ [target]: !currentState });
+  handleRemove = id => () => {
+    const { showModal } = this.props;
+    showModal({ modalType: removeChannelType, modalProps: { id } });
   }
 
-  handleModal = (target, activeId, valueChannel = '') => () => {
-    this.setState({ activeId, valueChannel });
-    this.toggleShow(target)();
-  }
-
-  renderConfirm = () => {
-    const { removeChannel } = this.props;
-    const { isOpenConfirm, activeId } = this.state;
-    return (
-      <ConfirmDelete
-        show={isOpenConfirm}
-        toggleConfirm={this.toggleShow('isOpenConfirm')}
-        removeChannel={removeChannel}
-        removingId={activeId}
-      />
-    );
-  }
-
-  renderRename = () => {
-    const { activeId, valueChannel, isOpenRename } = this.state;
-    return (
-      <RenameChannel
-        show={isOpenRename}
-        toggleRename={this.toggleShow('isOpenRename')}
-        id={activeId}
-        initialValues={{ text: valueChannel }}
-      />
-    );
+  handleRename = (id, text) => () => {
+    const { showModal } = this.props;
+    showModal({ modalType: renameChannelType, modalProps: { id, initialValues: { text } } });
   }
 
   render() {
@@ -79,8 +54,8 @@ class Channels extends React.PureComponent {
       <>
         <div className="d-flex justify-content-around border-bottom align-items-center">
           <span>Channels</span>
-          {!isOpenForm && <Button onClick={this.toggleShow('isOpenForm')} variant="wigth"><span>+</span></Button>}
-          {isOpenForm && <Button onClick={this.toggleShow('isOpenForm')} variant="wigth"><span>&times;</span></Button>}
+          {!isOpenForm && <Button onClick={this.toggleForm} variant="wigth"><span>+</span></Button>}
+          {isOpenForm && <Button onClick={this.toggleFrom} variant="wigth"><span>&times;</span></Button>}
         </div>
         <Nav defaultActiveKey="/general" className="flex-column" navbar>
           {channels.map(({ id, name, removable }) => (
@@ -88,13 +63,12 @@ class Channels extends React.PureComponent {
               <Nav.Link onClick={this.setActiveChannel(id)} disabled={activeChannel === id}>
                 {name}
               </Nav.Link>
-              <Button variant="wigth" onClick={this.handleModal('isOpenRename', id, name)}><span>&#9998;</span></Button>
-              {removable && <Button variant="wigth" onClick={this.handleModal('isOpenConfirm', id)}><span>&times;</span></Button>}
+              <Button variant="wigth" onClick={this.handleRename(id, name)}><span>&#9998;</span></Button>
+              {removable && <Button variant="wigth" onClick={this.handleRemove(id)}><span>&times;</span></Button>}
             </Nav.Item>
           ))}
-          {isOpenForm && <ChannelForm closeForm={this.toggleShow('isOpenForm')} />}
-          {this.renderConfirm()}
-          {this.renderRename()}
+          {isOpenForm && <ChannelForm closeForm={this.toggleForm} />}
+          <ModalRoot />
         </Nav>
       </>
     );

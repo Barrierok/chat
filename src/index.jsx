@@ -20,7 +20,7 @@ import {
 } from './features/channels/channelsSlice';
 import {
   addChannelActionName, removeChannelActionName, renameChannelActionName, addMessageActionName,
-} from './utils/actions';
+} from './utils/constants';
 
 let username = cookies.get('username');
 if (!username) {

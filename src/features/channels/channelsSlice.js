@@ -32,7 +32,8 @@ const channels = createSlice({
       _.remove(state.channels, (c => c.id === id));
     },
     renameChannelSuccess: (state, { payload: { channel } }) => {
-      state.channels[channel.id] = channel;
+      const index = state.channels.findIndex(c => c.id === channel.id);
+      state.channels[index] = channel;
     },
   },
 });
