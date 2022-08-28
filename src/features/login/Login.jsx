@@ -15,7 +15,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import Template from '../../common/components/template/Template';
 import img from './img.png';
-import axios from '../../common/axios';
+import client from '../../common/client';
 import AuthContext from '../auth/authContext';
 
 const initialValues = {
@@ -28,7 +28,7 @@ const Login = () => {
 
   const handleSubmit = useCallback(async (values, formik) => {
     try {
-      const { data } = await axios.post('login', values);
+      const { data } = await client.post('login', values);
 
       loginUser(data);
     } catch (err) {
