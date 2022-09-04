@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   Redirect,
   Route,
@@ -7,23 +7,21 @@ import {
 import PropTypes from 'prop-types';
 import AuthContext from '../../../features/auth/authContext';
 
-const IsNotAuthenticatedRoute = ({ children, ...rest }) => {
-  const location = useLocation();
-  const { from } = location.state || { from: { pathname: '/' } };
+const IsNotAuthenticatedRoute = React.memo(({ children, ...rest }) => {
   const { user } = useContext(AuthContext);
 
-  const renderContent = useCallback(
-    () => (!user ? children : <Redirect to={from} />),
-    [user],
-  );
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/' } };
 
   return (
-    <Route {...rest} render={renderContent} />
+    <Route {...rest} render={!user ? children : <Redirect to={from} />} />
   );
-};
+});
 
 IsNotAuthenticatedRoute.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
+
+IsNotAuthenticatedRoute.displayName = 'IsNotAuthenticatedRoute';
 
 export default IsNotAuthenticatedRoute;

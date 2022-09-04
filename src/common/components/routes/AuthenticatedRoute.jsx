@@ -1,29 +1,27 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AuthContext from '../../../features/auth/authContext';
 
-const AuthenticatedRoute = ({ children, ...rest }) => {
+const AuthenticatedRoute = React.memo(({ children, ...rest }) => {
   const { user } = useContext(AuthContext);
 
-  const render = useCallback(
-    ({ location }) => (user ? (
-      children
-    ) : (
-      <Redirect
-        to={{ pathname: '/login', state: { from: location } }}
-      />
-    )),
-    [user],
-  );
-
   return (
-    <Route {...rest} render={render} />
+    <Route
+      {...rest}
+      render={({ location }) => (user ? (
+        children
+      ) : (
+        <Redirect to={{ pathname: '/login', state: { from: location } }} />
+      ))}
+    />
   );
-};
+});
 
 AuthenticatedRoute.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
+
+AuthenticatedRoute.displayName = 'AuthenticatedRoute';
 
 export default AuthenticatedRoute;
