@@ -14,7 +14,7 @@ const IsNotAuthenticatedRoute = React.memo(({ children, ...rest }) => {
   const { from } = location.state || { from: { pathname: '/' } };
 
   return (
-    <Route {...rest} render={!user ? children : <Redirect to={from} />} />
+    <Route {...rest} render={() => (!user ? children : <Redirect to={from} />)} />
   );
 });
 
