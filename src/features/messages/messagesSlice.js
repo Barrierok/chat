@@ -9,8 +9,9 @@ const messagesAdapter = createEntityAdapter();
 
 const slice = createSlice({
   name: 'messages',
-  initialState: messagesAdapter.getInitialState,
+  initialState: messagesAdapter.getInitialState(),
   reducers: {
+    removeMessages: messagesAdapter.removeMany,
     setMessages: messagesAdapter.setAll,
     addMessage: messagesAdapter.addOne,
   },
@@ -31,6 +32,7 @@ export const selectMessagesIdsByChannel = createSelector(
 export const sendMessage = createAction('messages/sendMessage');
 export const {
   actions: {
+    removeMessages,
     setMessages,
     addMessage,
   },
