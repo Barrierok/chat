@@ -9,6 +9,7 @@ import AuthenticatedRoute from '../common/components/routes/AuthenticatedRoute';
 import IsNotAuthenticatedRoute from '../common/components/routes/IsNotAuthenticatedRoute';
 import useAuth from '../features/auth/authHooks';
 import store from './store';
+import Signup from '../features/signup/Signup';
 
 const App = () => {
   const auth = useAuth();
@@ -23,6 +24,9 @@ const App = () => {
             </AuthenticatedRoute>
             <IsNotAuthenticatedRoute path="/login">
               <Login />
+            </IsNotAuthenticatedRoute>
+            <IsNotAuthenticatedRoute path="/signup">
+              <Signup />
             </IsNotAuthenticatedRoute>
             <Route path="*">
               <NoMatch />

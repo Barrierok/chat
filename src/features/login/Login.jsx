@@ -37,7 +37,7 @@ const Login = () => {
         password: 'Неверные имя пользователя или пароль',
       });
     }
-  }, []);
+  }, [loginUser]);
 
   return (
     <Template containerFluid>
