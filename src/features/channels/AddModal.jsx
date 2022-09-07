@@ -34,7 +34,7 @@ const AddModal = ({ modal, toggle }) => {
 
   const onSubmit = useCallback(({ name }, formikBug) => {
     if (channels.some((c) => c.name === name.trim())) {
-      formikBug.setFieldError('name', t('error'));
+      formikBug.setFieldError('name', t('channel.error'));
     } else {
       dispatch(createChannel({ name: name.trim() }));
       toggle();

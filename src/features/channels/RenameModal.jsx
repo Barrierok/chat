@@ -34,7 +34,7 @@ const RenameModal = ({
 
   const onSubmit = useCallback((values, formikBug) => {
     if (channels.some((c) => c.name === values.name.trim())) {
-      formikBug.setFieldError('name', t('error'));
+      formikBug.setFieldError('name', t('channel.error'));
     } else {
       dispatch(updateChannelTrigger({ id, name: values.name.trim() }));
       toggle();
