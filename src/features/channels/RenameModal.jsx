@@ -44,12 +44,21 @@ const RenameModal = ({
 
   const formik = useFormik({
     enableReinitialize: true,
+    validateOnChange: false,
+    validateOnBlur: false,
     validationSchema,
     onSubmit,
     initialValues: {
       name,
     },
   });
+
+  const handleRef = useCallback((ref) => {
+    setTimeout(() => {
+      ref?.focus();
+      ref?.select();
+    }, 0);
+  }, []);
 
   return (
     <Modal centered isOpen={modal} toggle={toggle}>
@@ -61,6 +70,7 @@ const RenameModal = ({
       <form onSubmit={formik.handleSubmit}>
         <ModalBody>
           <Input
+            innerRef={handleRef}
             id="name"
             name="name"
             value={formik.values.name}

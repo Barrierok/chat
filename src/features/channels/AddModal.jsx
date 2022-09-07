@@ -43,10 +43,18 @@ const AddModal = ({ modal, toggle }) => {
   }, [channels, dispatch, t, toggle]);
 
   const formik = useFormik({
+    validateOnBlur: false,
+    validateOnChange: false,
     validationSchema,
     initialValues,
     onSubmit,
   });
+
+  const handleRef = useCallback((ref) => {
+    setTimeout(() => {
+      ref?.focus();
+    }, 0);
+  }, []);
 
   return (
     <Modal centered isOpen={modal} toggle={toggle}>
@@ -58,6 +66,7 @@ const AddModal = ({ modal, toggle }) => {
       <form onSubmit={formik.handleSubmit}>
         <ModalBody>
           <Input
+            innerRef={handleRef}
             id="name"
             name="name"
             value={formik.values.name}
