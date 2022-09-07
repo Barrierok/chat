@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Provider as RollbarProvider, ErrorBoundary, RollbarContext } from '@rollbar/react';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,19 +31,13 @@ const App = () => {
             <Provider store={store}>
               <Switch>
                 <AuthenticatedRoute exact path="/">
-                  <RollbarContext context="/">
-                    <Home />
-                  </RollbarContext>
+                  <Home />
                 </AuthenticatedRoute>
                 <IsNotAuthenticatedRoute path="/login">
-                  <RollbarContext context="/login">
-                    <Login />
-                  </RollbarContext>
+                  <Login />
                 </IsNotAuthenticatedRoute>
                 <IsNotAuthenticatedRoute path="/signup">
-                  <RollbarContext context="/signup">
-                    <Signup />
-                  </RollbarContext>
+                  <Signup />
                 </IsNotAuthenticatedRoute>
                 <Route path="*">
                   <NoMatch />
