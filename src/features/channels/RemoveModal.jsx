@@ -17,7 +17,7 @@ const RemoveModal = ({ modal, toggle, id }) => {
 
   const handleClick = useCallback(() => {
     dispatch(removeChannelTrigger({ id }));
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <Modal centered isOpen={modal} toggle={toggle}>
@@ -25,7 +25,9 @@ const RemoveModal = ({ modal, toggle, id }) => {
         {t('channel.remove')}
       </ModalHeader>
       <ModalBody>
-        {t('channel.sure')}
+        <p className="lead">
+          {t('channel.sure')}
+        </p>
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={toggle}>

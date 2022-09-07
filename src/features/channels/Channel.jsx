@@ -24,7 +24,7 @@ const Channel = React.memo(({ id }) => {
 
   const handleClick = useCallback((channelId) => () => {
     dispatch(setCurrentChannelId(channelId));
-  }, []);
+  }, [dispatch]);
 
   const { toggle: toggleRemove, modal: modalRemove } = useModalState();
   const { toggle: toggleRename, modal: modalRename } = useModalState();

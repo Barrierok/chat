@@ -40,7 +40,7 @@ const AddModal = ({ modal, toggle }) => {
       toggle();
       formikBug.resetForm();
     }
-  }, [toggle]);
+  }, [channels, dispatch, t, toggle]);
 
   const formik = useFormik({
     validationSchema,
@@ -65,6 +65,9 @@ const AddModal = ({ modal, toggle }) => {
             onBlur={formik.handleBlur}
             invalid={Boolean(formik.touched.name && formik.errors.name)}
           />
+          <Label className="visually-hidden" htmlFor="name">
+            {t('channel.name')}
+          </Label>
           <FormFeedback>
             {formik.touched.name && formik.errors.name}
           </FormFeedback>

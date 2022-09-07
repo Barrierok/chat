@@ -40,7 +40,7 @@ const RenameModal = ({
       toggle();
       formikBug.resetForm();
     }
-  }, [toggle, id]);
+  }, [channels, t, dispatch, id, toggle]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -68,6 +68,9 @@ const RenameModal = ({
             onBlur={formik.handleBlur}
             invalid={Boolean(formik.touched.name && formik.errors.name)}
           />
+          <Label className="visually-hidden" htmlFor="name">
+            {t('channel.name')}
+          </Label>
           <FormFeedback>
             {formik.touched.name && formik.errors.name}
           </FormFeedback>

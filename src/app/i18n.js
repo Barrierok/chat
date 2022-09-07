@@ -47,6 +47,7 @@ const resources = {
       },
       channel: {
         channels: 'Каналы',
+        name: 'Имя канала',
         error: 'Должно быть уникальным',
         rename: 'Переименовать канал',
         remove: 'Удалить канал',
