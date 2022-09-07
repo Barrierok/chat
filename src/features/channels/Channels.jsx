@@ -21,6 +21,7 @@ const Channels = () => {
         {t('channel.channels')}
         <Button onClick={toggle} outline className="btn-group-vertical p-1" color="primary">
           <AddIcon />
+          <span className="visually-hidden">+</span>
         </Button>
       </div>
       <Nav pills fill vertical className="px-2">
