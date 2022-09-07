@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Col, Row } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import Template from '../../common/components/template/Template';
 import Channels from '../channels/Channels';
 import Messages from '../messages/Messages';
@@ -10,6 +12,7 @@ import { selectCurrentChannelId, setChannels, setCurrentChannelId } from '../cha
 import client from '../../common/client';
 
 const Home = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,15 +21,19 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await client.get('data');
+      try {
+        const { data } = await client.get('data');
 
-      dispatch(setMessages(data.messages));
-      dispatch(setChannels(data.channels));
-      dispatch(setCurrentChannelId(data.currentChannelId));
+        dispatch(setMessages(data.messages));
+        dispatch(setChannels(data.channels));
+        dispatch(setCurrentChannelId(data.currentChannelId));
+      } catch (e) {
+        toast.error(t('toasts.loadError'));
+      }
     };
 
     fetchData();
-  }, []);
+  }, [t]);
 
   const currentChannelId = useSelector(selectCurrentChannelId);
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './i18n';
 import Home from '../features/home/Home';
 import NoMatch from '../features/noMatch/NoMatch';
@@ -16,26 +18,40 @@ const App = () => {
   const auth = useAuth();
 
   return (
-    <BrowserRouter>
-      <AuthContext.Provider value={auth}>
-        <Provider store={store}>
-          <Switch>
-            <AuthenticatedRoute exact path="/">
-              <Home />
-            </AuthenticatedRoute>
-            <IsNotAuthenticatedRoute path="/login">
-              <Login />
-            </IsNotAuthenticatedRoute>
-            <IsNotAuthenticatedRoute path="/signup">
-              <Signup />
-            </IsNotAuthenticatedRoute>
-            <Route path="*">
-              <NoMatch />
-            </Route>
-          </Switch>
-        </Provider>
-      </AuthContext.Provider>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <AuthContext.Provider value={auth}>
+          <Provider store={store}>
+            <Switch>
+              <AuthenticatedRoute exact path="/">
+                <Home />
+              </AuthenticatedRoute>
+              <IsNotAuthenticatedRoute path="/login">
+                <Login />
+              </IsNotAuthenticatedRoute>
+              <IsNotAuthenticatedRoute path="/signup">
+                <Signup />
+              </IsNotAuthenticatedRoute>
+              <Route path="*">
+                <NoMatch />
+              </Route>
+            </Switch>
+          </Provider>
+        </AuthContext.Provider>
+      </BrowserRouter>
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 };
 

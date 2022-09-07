@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client';
+import { toast } from 'react-toastify';
 import { connectionEstablished, startConnecting } from './socketSlice';
 import {
   addMessage,
@@ -16,6 +17,7 @@ import {
   updateChannel,
   updateChannelTrigger,
 } from '../channels/channelsSlice';
+import i18n from '../../app/i18n';
 
 const socketMiddleware = (store) => {
   let socket = null;
@@ -62,15 +64,20 @@ const socketMiddleware = (store) => {
         case createChannel.type: {
           socket.emit('newChannel', action.payload, (response) => {
             store.dispatch(setCurrentChannelId(response.data.id));
+            toast.success(i18n.t('toasts.createSuccess'));
           });
           break;
         }
         case removeChannelTrigger.type: {
-          socket.emit('removeChannel', action.payload);
+          socket.emit('removeChannel', action.payload, () => {
+            toast.success(i18n.t('toasts.removeSuccess'));
+          });
           break;
         }
         case updateChannelTrigger.type: {
-          socket.emit('renameChannel', action.payload);
+          socket.emit('renameChannel', action.payload, () => {
+            toast.success(i18n.t('toasts.renameSuccess'));
+          });
           break;
         }
         default: {

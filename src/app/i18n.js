@@ -56,6 +56,12 @@ const resources = {
       template: {
         logout: 'Выйти',
       },
+      toasts: {
+        loadError: 'Не удалось загрузить данные',
+        createSuccess: 'Канал создан',
+        renameSuccess: 'Канал переименован',
+        removeSuccess: 'Канал удален',
+      },
     },
   },
 };
