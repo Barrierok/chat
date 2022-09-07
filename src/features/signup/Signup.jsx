@@ -47,9 +47,9 @@ const Signup = () => {
 
       loginUser(data);
     } catch (err) {
-      formik.setErrors({ username: t('validation.error') });
+      formik.setErrors({ username: ' ', password: ' ', confirmPassword: t('signupPage.error') });
     }
-  }, [loginUser]);
+  }, [loginUser, t]);
 
   return (
     <Template containerFluid>
