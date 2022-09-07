@@ -8,6 +8,7 @@ import {
   NavItem,
   UncontrolledDropdown,
 } from 'reactstrap';
+import { useTranslation } from 'react-i18next';
 import { selectChannelById, selectCurrentChannelId, setCurrentChannelId } from './channelsSlice';
 import ChannelButton from './ChannelButton';
 import useModalState from '../../common/hooks/useModalState';
@@ -15,6 +16,7 @@ import RemoveModal from './RemoveModal';
 import RenameModal from './RenameModal';
 
 const Channel = React.memo(({ id }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const currentChannelId = useSelector(selectCurrentChannelId);
@@ -58,8 +60,12 @@ const Channel = React.memo(({ id }) => {
             />
             <DropdownToggle caret color={currentChannelId === channel.id ? 'primary' : 'light'} />
             <DropdownMenu>
-              <DropdownItem onClick={toggleRemove}>Удалить</DropdownItem>
-              <DropdownItem onClick={toggleRename}>Переименовать</DropdownItem>
+              <DropdownItem onClick={toggleRemove}>
+                {t('common.remove')}
+              </DropdownItem>
+              <DropdownItem onClick={toggleRename}>
+                {t('common.rename')}
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         )}

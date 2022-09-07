@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import {
   Button,
   Card,
@@ -12,6 +12,7 @@ import {
 } from 'reactstrap';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import Template from '../../common/components/template/Template';
 import img from './img.png';
 import client from '../../common/client';
@@ -23,19 +24,21 @@ const initialValues = {
   confirmPassword: '',
 };
 
-const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
-    .required('Обязательное поле'),
-  password: Yup.string()
-    .min(6, 'Не менее 6 символов')
-    .required('Обязательное поле'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Пароли должны совпадать'),
-});
-
 const Signup = () => {
+  const { t } = useTranslation();
+
+  const validationSchema = useMemo(() => Yup.object().shape({
+    username: Yup.string()
+      .min(3, t('validation.minMax'))
+      .max(20, t('validation.minMax'))
+      .required(t('validation.required')),
+    password: Yup.string()
+      .min(6, t('validation.minSix'))
+      .required(t('validation.required')),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], t('validation.samePassword')),
+  }), [t]);
+
   const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = useCallback(async ({ username, password }, formik) => {
@@ -44,9 +47,7 @@ const Signup = () => {
 
       loginUser(data);
     } catch (err) {
-      formik.setErrors({
-        username: 'Такой пользователь уже существует',
-      });
+      formik.setErrors({ username: t('validation.error') });
     }
   }, [loginUser]);
 
@@ -57,7 +58,7 @@ const Signup = () => {
           <Card className="shadow-sm">
             <CardBody className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <div>
-                <img src={img} alt="Регистрация" className="rounded-circle" />
+                <img src={img} alt={t('signupPage.signup')} className="rounded-circle" />
               </div>
               <Formik
                 validationSchema={validationSchema}
@@ -66,18 +67,22 @@ const Signup = () => {
               >
                 {({ errors, touched }) => (
                   <Form className="w-50">
-                    <h1 className="text-center mb-4">Регистрация</h1>
+                    <h1 className="text-center mb-4">
+                      {t('signupPage.signup')}
+                    </h1>
                     <FormGroup floating>
                       <Input
                         invalid={Boolean(touched.username && errors.username)}
                         tag={Field}
                         name="username"
                         id="username"
-                        placeholder="Имя пользователя"
+                        placeholder={t('signupPage.username')}
                         autoComplete="true"
                         required
                       />
-                      <Label for="username">Имя пользователя</Label>
+                      <Label for="username">
+                        {t('signupPage.username')}
+                      </Label>
                       <FormFeedback tooltip>
                         {touched.username && errors.username}
                       </FormFeedback>
@@ -88,12 +93,14 @@ const Signup = () => {
                         tag={Field}
                         name="password"
                         id="password"
-                        placeholder="Пароль"
+                        placeholder={t('signupPage.password')}
                         autoComplete="new-password"
                         required
                         type="password"
                       />
-                      <Label for="password">Пароль</Label>
+                      <Label for="password">
+                        {t('signupPage.password')}
+                      </Label>
                       <FormFeedback tooltip>
                         {touched.password && errors.password}
                       </FormFeedback>
@@ -104,18 +111,20 @@ const Signup = () => {
                         tag={Field}
                         name="confirmPassword"
                         id="confirmPassword"
-                        placeholder="Подвердите пароль"
+                        placeholder={t('signupPage.confirmPassword')}
                         autoComplete="confirm-password"
                         required
                         type="password"
                       />
-                      <Label for="password">Подвердите пароль</Label>
+                      <Label for="password">
+                        {t('signupPage.confirmPassword')}
+                      </Label>
                       <FormFeedback tooltip>
                         {touched.confirmPassword && errors.confirmPassword}
                       </FormFeedback>
                     </FormGroup>
                     <Button type="submit" color="primary" outline block>
-                      Зарегистрироваться
+                      {t('signupPage.action')}
                     </Button>
                   </Form>
                 )}

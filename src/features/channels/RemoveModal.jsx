@@ -8,9 +8,11 @@ import {
   ModalHeader,
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { removeChannelTrigger } from './channelsSlice';
 
 const RemoveModal = ({ modal, toggle, id }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const handleClick = useCallback(() => {
@@ -20,17 +22,17 @@ const RemoveModal = ({ modal, toggle, id }) => {
   return (
     <Modal centered isOpen={modal} toggle={toggle}>
       <ModalHeader toggle={toggle}>
-        Добавить канал
+        {t('channel.remove')}
       </ModalHeader>
       <ModalBody>
-        Уверены?
+        {t('channel.sure')}
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={toggle}>
-          Отменить
+          {t('common.cancel')}
         </Button>
         <Button color="danger" onClick={handleClick}>
-          Удалить
+          {t('common.remove')}
         </Button>
       </ModalFooter>
     </Modal>

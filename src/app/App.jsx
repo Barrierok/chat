@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
+import './i18n';
 import Home from '../features/home/Home';
 import NoMatch from '../features/noMatch/NoMatch';
 import Login from '../features/login/Login';

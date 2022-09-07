@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { selectChannelById } from '../channels/channelsSlice';
 
 const MessagesHeader = ({ currentChannelId, messagesCount }) => {
+  const { t } = useTranslation();
   const currentChannel = useSelector((state) => selectChannelById(state, currentChannelId));
 
   return (
@@ -12,7 +14,7 @@ const MessagesHeader = ({ currentChannelId, messagesCount }) => {
         <b># {currentChannel?.name}</b>
       </p>
       <span className="text-muted">
-        {messagesCount} сообщений
+        {t('messageForm.message', { count: messagesCount })}
       </span>
     </div>
   );

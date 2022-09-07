@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import { Button, Container, Navbar } from 'reactstrap';
 import cn from 'classnames';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AuthContext from '../../../features/auth/authContext';
 
 const Template = ({ children, containerFluid, containerClassName }) => {
   const { user, logoutUser } = useContext(AuthContext);
+  const { t } = useTranslation();
 
   return (
     <div className="d-flex flex-column h-100">
       <Navbar container className="shadow-sm" expand="lg" light color="white">
         <Link to="/" className="navbar-brand">Chat by Zubtsov</Link>
-        {user && <Button color="primary" onClick={logoutUser}>Выйти</Button>}
+        {user && <Button color="primary" onClick={logoutUser}>{t('template.logout')}</Button>}
       </Navbar>
       <Container fluid={containerFluid} className={cn(containerClassName, 'flex-grow-1')}>
         {children}

@@ -13,6 +13,7 @@ import {
   FormFeedback,
 } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
+import { useTranslation } from 'react-i18next';
 import Template from '../../common/components/template/Template';
 import img from './img.png';
 import client from '../../common/client';
@@ -24,6 +25,7 @@ const initialValues = {
 };
 
 const Login = () => {
+  const { t } = useTranslation();
   const { loginUser } = useContext(AuthContext);
 
   const handleSubmit = useCallback(async (values, formik) => {
@@ -33,8 +35,8 @@ const Login = () => {
       loginUser(data);
     } catch (err) {
       formik.setErrors({
-        username: 'Неверные имя пользователя или пароль',
-        password: 'Неверные имя пользователя или пароль',
+        username: t('loginPage.error'),
+        password: t('loginPage.error'),
       });
     }
   }, [loginUser]);
@@ -59,11 +61,13 @@ const Login = () => {
                           tag={Field}
                           name="username"
                           id="username"
-                          placeholder="Ваш ник"
+                          placeholder={t('loginPage.username')}
                           autoComplete="true"
                           required
                         />
-                        <Label for="username">Ваш ник</Label>
+                        <Label for="username">
+                          {t('loginPage.username')}
+                        </Label>
                       </FormGroup>
                       <FormGroup floating className="mb-4 position-relative">
                         <Input
@@ -71,18 +75,20 @@ const Login = () => {
                           tag={Field}
                           name="password"
                           id="password"
-                          placeholder="Пароль"
+                          placeholder={t('loginPage.password')}
                           autoComplete="current-password"
                           required
                           type="password"
                         />
-                        <Label for="password">Пароль</Label>
+                        <Label for="password">
+                          {t('loginPage.password')}
+                        </Label>
                         <FormFeedback tooltip>
                           {errors.password}
                         </FormFeedback>
                       </FormGroup>
                       <Button type="submit" color="primary" outline block>
-                        Войти
+                        {t('loginPage.login')}
                       </Button>
                     </Form>
                   )}
@@ -91,8 +97,8 @@ const Login = () => {
             </CardBody>
             <CardFooter className="p-4">
               <div className="text-center">
-                <span className="">Нет аккаунта? </span>
-                <Link to="/signup">Регистрация</Link>
+                <span className="">{t('loginPage.noAcc')} </span>
+                <Link to="/signup">{t('loginPage.signup')}</Link>
               </div>
             </CardFooter>
           </Card>
