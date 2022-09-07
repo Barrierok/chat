@@ -13,7 +13,7 @@ const Template = ({ children, containerFluid, containerClassName }) => {
   return (
     <div className="d-flex flex-column h-100">
       <Navbar container className="shadow-sm" expand="lg" light color="white">
-        <Link to="/" className="navbar-brand">Chat by Zubtsov</Link>
+        <Link to="/" className="navbar-brand">Hexlet Chat</Link>
         {user && <Button color="primary" onClick={logoutUser}>{t('template.logout')}</Button>}
       </Navbar>
       <Container fluid={containerFluid} className={cn(containerClassName, 'flex-grow-1')}>
@@ -26,7 +26,12 @@ const Template = ({ children, containerFluid, containerClassName }) => {
 Template.propTypes = {
   containerClassName: PropTypes.string,
   containerFluid: PropTypes.bool,
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
+};
+
+Template.defaultProps = {
+  containerClassName: '',
+  containerFluid: false,
 };
 
 export default Template;

@@ -46,7 +46,7 @@ const MessageForm = React.memo(({ currentChannelId }) => {
     }
 
     inputRef.current.focus();
-  }, [value, currentChannelId, user.username]);
+  }, [value, dispatch, currentChannelId, user.username]);
 
   return (
     <div className="mt-auto px-5 py-3">
@@ -63,7 +63,8 @@ const MessageForm = React.memo(({ currentChannelId }) => {
             disabled={!value.trim()}
             type="submit"
             className="btn-group-vertical"
-            color="primary">
+            color="primary"
+          >
             <SendIcon />
             <span className="visually-hidden">
               {t('common.send')}

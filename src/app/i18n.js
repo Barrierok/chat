@@ -29,7 +29,7 @@ const resources = {
         signup: 'Регистрация',
         username: 'Имя пользователя',
         password: 'Пароль',
-        confirmPassword: 'Подвердите пароль',
+        confirmPassword: 'Подтвердите пароль',
         action: 'Зарегистрироваться',
       },
       noMatchPage: {
@@ -57,10 +57,10 @@ const resources = {
         logout: 'Выйти',
       },
       toasts: {
-        loadError: 'Не удалось загрузить данные',
+        loadError: 'Ошибка соединения',
         createSuccess: 'Канал создан',
         renameSuccess: 'Канал переименован',
-        removeSuccess: 'Канал удален',
+        removeSuccess: 'Канал удалён',
       },
     },
   },

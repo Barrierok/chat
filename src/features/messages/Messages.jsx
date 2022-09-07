@@ -24,7 +24,8 @@ class Messages extends React.Component {
   }
 
   getSnapshotBeforeUpdate(prevProps) {
-    if (prevProps.messagesIds.length < this.props.messagesIds.length) {
+    const { messagesIds } = this.props;
+    if (prevProps.messagesIds.length < messagesIds.length) {
       const list = this.listRef.current;
       return list.scrollHeight - list.scrollTop;
     }
@@ -33,7 +34,8 @@ class Messages extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.currentChannelId !== this.props.currentChannelId) {
+    const { currentChannelId } = this.props;
+    if (prevProps.currentChannelId !== currentChannelId) {
       this.scrollToBottom();
     }
 
@@ -57,17 +59,17 @@ class Messages extends React.Component {
           currentChannelId={currentChannelId}
         />
         <div ref={this.listRef} className="chat-messages overflow-auto px-5 flex-grow-1">
-          {messagesIds.map((id) => <Message key={id} id={id}/>)}
+          {messagesIds.map((id) => <Message key={id} id={id} />)}
         </div>
-        <MessageForm currentChannelId={currentChannelId}/>
+        <MessageForm currentChannelId={currentChannelId} />
       </>
     );
   }
 }
 
 Messages.propTypes = {
-  currentChannelId: PropTypes.number,
-  messagesIds: PropTypes.arrayOf(PropTypes.number),
+  currentChannelId: PropTypes.number.isRequired,
+  messagesIds: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default connector(Messages);

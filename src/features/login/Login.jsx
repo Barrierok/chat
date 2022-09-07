@@ -39,7 +39,7 @@ const Login = () => {
         password: t('loginPage.error'),
       });
     }
-  }, [loginUser]);
+  }, [loginUser, t]);
 
   return (
     <Template containerFluid>
@@ -48,7 +48,7 @@ const Login = () => {
           <Card className="shadow-sm">
             <CardBody className="row p-5">
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <img src={img} alt="Войти" className="rounded-circle"/>
+                <img src={img} alt="Войти" className="rounded-circle" />
               </Col>
               <Col xs={12} md={6} className="mt-3 mt-mb-0">
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -97,7 +97,10 @@ const Login = () => {
             </CardBody>
             <CardFooter className="p-4">
               <div className="text-center">
-                <span className="">{t('loginPage.noAcc')} </span>
+                <span className="">
+                  {t('loginPage.noAcc')}
+                  {' '}
+                </span>
                 <Link to="/signup">{t('loginPage.signup')}</Link>
               </div>
             </CardFooter>
