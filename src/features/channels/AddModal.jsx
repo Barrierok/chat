@@ -51,9 +51,9 @@ const AddModal = ({ modal, toggle }) => {
   return (
     <Modal centered isOpen={modal} toggle={toggle}>
       <ModalHeader toggle={toggle}>
-        <Label htmlFor="name" className="m-0 h4">
+        <div className="modal-title h4">
           {t('channel.add')}
-        </Label>
+        </div>
       </ModalHeader>
       <form onSubmit={formik.handleSubmit}>
         <ModalBody>
