@@ -10,6 +10,7 @@ import { startConnecting } from '../socket/socketSlice';
 import { setMessages } from '../messages/messagesSlice';
 import { selectCurrentChannelId, setChannels, setCurrentChannelId } from '../channels/channelsSlice';
 import client from '../../common/client';
+import routes from '../../common/routes';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -17,12 +18,12 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(startConnecting());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await client.get('data');
+        const { data } = await client.get(routes.dataPath());
 
         dispatch(setMessages(data.messages));
         dispatch(setChannels(data.channels));
@@ -33,7 +34,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, [t]);
+  }, [dispatch, t]);
 
   const currentChannelId = useSelector(selectCurrentChannelId);
 

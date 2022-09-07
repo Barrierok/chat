@@ -17,6 +17,7 @@ import Template from '../../common/components/template/Template';
 import img from './img.png';
 import client from '../../common/client';
 import AuthContext from '../auth/authContext';
+import routes from '../../common/routes';
 
 const initialValues = {
   username: '',
@@ -43,7 +44,7 @@ const Signup = () => {
 
   const handleSubmit = useCallback(async ({ username, password }, formik) => {
     try {
-      const { data } = await client.post('signup', { username, password });
+      const { data } = await client.post(routes.signupPath(), { username, password });
 
       loginUser(data);
     } catch (err) {
@@ -117,7 +118,7 @@ const Signup = () => {
                         required
                         type="password"
                       />
-                      <Label for="password">
+                      <Label for="confirmPassword">
                         {t('signupPage.confirmPassword')}
                       </Label>
                       <FormFeedback tooltip>

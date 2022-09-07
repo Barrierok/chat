@@ -18,6 +18,7 @@ import Template from '../../common/components/template/Template';
 import img from './img.png';
 import client from '../../common/client';
 import AuthContext from '../auth/authContext';
+import routes from '../../common/routes';
 
 const initialValues = {
   username: '',
@@ -30,7 +31,7 @@ const Login = () => {
 
   const handleSubmit = useCallback(async (values, formik) => {
     try {
-      const { data } = await client.post('login', values);
+      const { data } = await client.post(routes.loginPath(), values);
 
       loginUser(data);
     } catch (err) {
