@@ -12,10 +12,13 @@ import {
 } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import filter from 'leo-profanity';
 import { useTranslation } from 'react-i18next';
 import { sendMessage } from './messagesSlice';
 import AuthContext from '../auth/authContext';
 import { ReactComponent as SendIcon } from './icon.svg';
+
+filter.add(filter.getDictionary('ru'));
 
 const MessageForm = React.memo(({ currentChannelId }) => {
   const { t } = useTranslation();
@@ -34,7 +37,7 @@ const MessageForm = React.memo(({ currentChannelId }) => {
 
     if (value.trim().length) {
       dispatch(sendMessage({
-        body: value.trim(),
+        body: filter.clean(value.trim()),
         channelId: currentChannelId,
         username: user.username,
       }));
