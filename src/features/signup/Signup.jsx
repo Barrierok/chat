@@ -79,6 +79,7 @@ const Signup = () => {
                         placeholder={t('signupPage.username')}
                         autoComplete="true"
                         required
+                        autoFocus
                       />
                       <Label for="username">
                         {t('signupPage.username')}

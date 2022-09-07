@@ -57,6 +57,7 @@ const Login = () => {
                       <h1 className="text-center mb-4">Войти</h1>
                       <FormGroup floating>
                         <Input
+                          autoFocus
                           invalid={Boolean(errors.username)}
                           tag={Field}
                           name="username"
