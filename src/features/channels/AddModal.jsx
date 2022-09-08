@@ -85,7 +85,7 @@ const AddModal = ({ modal, toggle }) => {
           <Button color="secondary" onClick={toggle}>
             {t('common.cancel')}
           </Button>
-          <Button color="primary" type="submit" disabled={!formik.dirty}>
+          <Button color="primary" type="submit">
             {t('common.send')}
           </Button>
         </ModalFooter>
