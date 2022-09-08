@@ -58,7 +58,14 @@ const Channel = React.memo(({ id }) => {
               name={channel.name}
               handleClick={handleClick}
             />
-            <DropdownToggle caret color={currentChannelId === channel.id ? 'primary' : 'light'} />
+            <DropdownToggle
+              caret
+              color={currentChannelId === channel.id ? 'primary' : 'light'}
+            >
+              <span className="visually-hidden">
+                {t('channel.control')}
+              </span>
+            </DropdownToggle>
             <DropdownMenu>
               <DropdownItem onClick={toggleRemove}>
                 {t('common.remove')}
