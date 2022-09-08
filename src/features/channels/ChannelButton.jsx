@@ -11,7 +11,7 @@ const ChannelButton = ({
     className="text-start text-truncate"
     onClick={handleClick(id)}
   >
-    <span className="me-1">#</span>
+    <span className="me-1"># </span>
     {name}
   </Button>
 );
