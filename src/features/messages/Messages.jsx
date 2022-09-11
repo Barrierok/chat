@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-class,functional/no-this-expression */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

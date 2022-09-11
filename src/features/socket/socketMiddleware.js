@@ -20,6 +20,7 @@ import {
 import i18n from '../../app/i18n';
 
 const socketMiddleware = (store) => {
+  // eslint-disable-next-line functional/no-let
   let socket = null;
 
   return (next) => (action) => {
