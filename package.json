@@ -1,6 +1,8 @@
 {
   "name": "@hexlet/code",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": "Ilya Zubtsov",
+  "description": "Chat with websocket using Bootstrap. The app has authorization and registration. It is possible to add, delete, edit channels and send messages to any channel.",
   "private": true,
   "proxy": "http://localhost:5001",
   "dependencies": {
